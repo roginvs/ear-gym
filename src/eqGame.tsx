@@ -1,7 +1,7 @@
-import * as React from 'react';
-import l from './lang';
-import {GameStageRenderProps, Game, FxOnOffButton} from './game';
-
+import * as React from "react";
+import l from "./lang";
+import { GameStageRenderProps, Game, FxOnOffButton } from "./game";
+import { assertNever } from "./utils";
 
 interface EqSelectorState {
     x?: number;
@@ -106,7 +106,8 @@ class EqSelector extends React.Component<EqSelectorProps, EqSelectorState> {
                                     fontWeight: "bold"
                                 }}
                             >
-                                {selectedFreq}{l.hz}
+                                {selectedFreq}
+                                {l.hz}
                             </span>
                         </div>
                     ) : null}
@@ -133,7 +134,8 @@ class EqSelector extends React.Component<EqSelectorProps, EqSelectorState> {
                                 }}
                             >
                                 {" "}
-                                {this.props.correctFreq}{l.hz}
+                                {this.props.correctFreq}
+                                {l.hz}
                             </span>
                         </div>
                     ) : null}
@@ -181,7 +183,8 @@ class EqSelector extends React.Component<EqSelectorProps, EqSelectorState> {
                                     fontSize: "0.7em"
                                 }}
                             >
-                                {Math.round(100 / Math.sqrt(2) * 2 ** (i - 1))}{l.hz}
+                                {Math.round(100 / Math.sqrt(2) * 2 ** (i - 1))}
+                                {l.hz}
                             </span>
                         </span>
                     ))}
@@ -204,7 +207,8 @@ class EqSelector extends React.Component<EqSelectorProps, EqSelectorState> {
                                     fontSize: "0.7em"
                                 }}
                             >
-                                {100 * 2 ** (i - 1)}{l.hz}
+                                {100 * 2 ** (i - 1)}
+                                {l.hz}
                             </span>
                         </span>
                     ))}
@@ -220,11 +224,18 @@ interface GameState {
     answeredFreq?: number;
 }
 
-const EQ_STAGES_Q_GAIN=[
-    [2, 12], [2, 9], [2, 6], [1, 12], [1, 9], [1, 6], [2, 3], [1, 3]
+const EQ_STAGES_Q_GAIN = [
+    [2, 12],
+    [2, 9],
+    [2, 6],
+    [1, 12],
+    [1, 9],
+    [1, 6],
+    [2, 3],
+    [1, 3]
 ];
 
-class EqStage extends React.Component<GameStageRenderProps,GameState>{
+class EqStage extends React.Component<GameStageRenderProps, GameState> {
     mounted = false;
     state: GameState = {
         fxActive: false
@@ -240,13 +251,19 @@ class EqStage extends React.Component<GameStageRenderProps,GameState>{
         if (!this.mounted) {
             return;
         }
-        
+
         if (this.biquadFilter) {
             console.warn(`Start when already have biquadFilter`);
             this.biquadFilter.disconnect();
             this.biquadFilter = undefined;
         }
-        const correctFreq = Math.round(100 * 2 ** (Math.random() * 7));
+        const musicType = this.props.musicType;
+        const correctFreq =
+            musicType === "music" || musicType === "drums"
+                ? Math.round(100 * 2 ** (Math.random() * 7))
+                : musicType === "piano" || musicType === "electricguitar"
+                    ? Math.round(100 * 2 ** (Math.random() * 6))
+                    : assertNever(musicType);
         this.setState({
             correctFreq,
             answeredFreq: undefined
@@ -259,7 +276,7 @@ class EqStage extends React.Component<GameStageRenderProps,GameState>{
 
         this.biquadFilter = this.props.audioCtx.createBiquadFilter();
 
-        this.biquadFilter.type = "peaking";        
+        this.biquadFilter.type = "peaking";
         this.biquadFilter.frequency.setValueAtTime(correctFreq, 0);
 
         this.setQAndGain();
@@ -278,13 +295,13 @@ class EqStage extends React.Component<GameStageRenderProps,GameState>{
     setQAndGain = () => {
         const [q, gain] = EQ_STAGES_Q_GAIN[this.props.level];
         if (this.biquadFilter) {
-        this.biquadFilter.Q.setValueAtTime(q, 0);
-        this.biquadFilter.gain.setValueAtTime(
-            this.state.fxActive ? gain : 0,
-            0
-        );
+            this.biquadFilter.Q.setValueAtTime(q, 0);
+            this.biquadFilter.gain.setValueAtTime(
+                this.state.fxActive ? gain : 0,
+                0
+            );
         }
-    }
+    };
 
     componentWillUnmount() {
         this.mounted = false;
@@ -293,7 +310,6 @@ class EqStage extends React.Component<GameStageRenderProps,GameState>{
             this.biquadFilter = undefined;
         }
     }
-
 
     onAnswer = (freq: number) => {
         const correctFreq = this.state.correctFreq;
@@ -312,27 +328,26 @@ class EqStage extends React.Component<GameStageRenderProps,GameState>{
         const freqMin = correctFreq / 2 ** (q / 2);
         const correct = freq >= freqMin && freq <= freqMax;
         console.info(
-            `level=${this.props.level} ` + 
-            `answered=${freq} correct=${correctFreq} ` +
+            `level=${this.props.level} ` +
+                `answered=${freq} correct=${correctFreq} ` +
                 `freqMin=${freqMin} freqMax=${freqMax} correct=${correct}`
         );
-        
-        this.props.onAnswer(correct);     
+
+        this.props.onAnswer(correct);
         setTimeout(() => {
-            this.props.onReturn()
+            this.props.onReturn();
         }, 3000);
     };
 
-
     toggleFx = (newFxActive: boolean) => {
-        this.setState({ fxActive: newFxActive }, this.setQAndGain);                    
+        this.setState({ fxActive: newFxActive }, this.setQAndGain);
     };
 
-
-    render () {
+    render() {
         const [q, gain] = EQ_STAGES_Q_GAIN[this.props.level];
-        return <div>
-                            <EqSelector
+        return (
+            <div>
+                <EqSelector
                     q={q}
                     correctFreq={
                         this.state.answeredFreq
@@ -341,28 +356,28 @@ class EqStage extends React.Component<GameStageRenderProps,GameState>{
                     }
                     onAnswer={this.onAnswer}
                 />
-                    <div className="text-center">
-                        <FxOnOffButton
-                            active={this.state.fxActive}
-                            type="off"
-                            onClick={() => this.toggleFx(false)}
-                        />
+                <div className="text-center">
+                    <FxOnOffButton
+                        active={this.state.fxActive}
+                        type="off"
+                        onClick={() => this.toggleFx(false)}
+                    />
 
-                        <FxOnOffButton
-                            active={!this.state.fxActive}
-                            type="on"
-                            onClick={() => this.toggleFx(true)}
-                        />
-                    </div>
+                    <FxOnOffButton
+                        active={!this.state.fxActive}
+                        type="on"
+                        onClick={() => this.toggleFx(true)}
+                    />
+                </div>
             </div>
+        );
     }
 }
 
-
 export const EQ_GAME: Game = {
-    id: 'eqplus',
+    id: "eqplus",
     name: l.eqplus,
     description: l.eqplusdesc,
     maxLevels: 8,
-    stageRender: props => <EqStage {...props}/>
-}
+    stageRender: props => <EqStage {...props} />
+};

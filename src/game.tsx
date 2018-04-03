@@ -4,9 +4,11 @@ export const MAX_STAGES = 20;
 import classnames from 'classnames';
 import { GameSoundPlayer } from './utils';
 import l from './lang';
+import { MusicType } from './music';
 
 export interface GameStageRenderProps {
     music: AudioBuffer[];
+    musicType: MusicType;
     audioCtx: AudioContext;
     level: number;    
     onAnswer: (isOk: boolean) => void;

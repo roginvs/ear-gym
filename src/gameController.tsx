@@ -97,7 +97,7 @@ export class GameController extends React.Component<
                             level: this.state.level,
                             audioCtx: this.props.audioCtx,                            
                             music,
-                            
+                            musicType: this.props.musicType,
                             onAnswer: correct => {
                                 if (correct) {
                                     this.props.playSound('correct')
