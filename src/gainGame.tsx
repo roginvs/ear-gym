@@ -146,10 +146,9 @@ class GainStage extends React.Component<GameStageRenderProps, GameState> {
         ) {
             const [gainStep, gainNumbers] = DIST_CHOICES[this.props.level-1];
             const gainDb =
-                this.state.firstGain + this.state.correctId * gainStep;
-                console.info(`Gaindb = ${gainDb}`)
+                this.state.firstGain + this.state.correctId * gainStep;                
             this.fx.gain.setValueAtTime(
-                this.state.fxActive ? 10 ** (gainDb / 10) : 1,
+                this.state.fxActive ? 10 ** (gainDb / 20) : 1, // why 20?
                 0
             );
         }
