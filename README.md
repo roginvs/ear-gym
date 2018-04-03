@@ -9,4 +9,4 @@
 - [ ] Other games
 - [ ] Refactor gameRenders
 - [ ] possibility to start game at last achieved level
-- [ ] tothink: to clear lives on level start?
+- [x] tothink: to clear lives on level start?

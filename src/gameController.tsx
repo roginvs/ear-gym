@@ -128,7 +128,8 @@ export class GameController extends React.Component<
                                     } else {
                                         this.setState({
                                             level: level + 1,
-                                            stage: 1
+                                            stage: 1,
+                                            lives: LIVES_MAX
                                         });
                                     }
                                 } else {
