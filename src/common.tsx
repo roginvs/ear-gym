@@ -63,3 +63,18 @@ export class Loader extends React.Component<{
     }
 }
 
+
+export class ErrorInfo extends React.Component<{
+    info?: string
+}, {}> {
+    render() {
+        return (
+            <DivFadeinCss className="p-3 text-center text-danger">
+                <i className="fa fa-times" />
+                <span> {this.props.info || "Ошибка"}</span>
+            </DivFadeinCss>
+        );
+    }
+}
+
+

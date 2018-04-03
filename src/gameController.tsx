@@ -1,6 +1,6 @@
 import React from "react";
 import { range, urlToAudioBuffer, GameSoundPlayer } from "./utils";
-import { Loader } from "./common";
+import { Loader, ErrorInfo } from "./common";
 import { MusicType, musicList } from "./music";
 import { Game, MAX_STAGES } from "./game";
 import classNames from "classnames";
@@ -10,6 +10,7 @@ interface GameControllerState {
     stage: number;
     lives: number;
     music?: AudioBuffer[];
+    err?: Error;
 }
 
 const STAGES_COUNT = 20;
@@ -35,13 +36,17 @@ export class GameController extends React.Component<
             musicList(this.props.musicType)
                 .map(name => `media/${this.props.musicType}/${name}`)
                 .map(url => urlToAudioBuffer(this.props.audioCtx, url))
-        ).then(music => this.setState({ music }));
+        ).then(music => this.setState({ music }))
+        .catch(err => this.setState({err}))
         document.getElementsByTagName('body')[0].style.backgroundColor = 'lightblue';
     }
     componentWillUnmount() {
         document.getElementsByTagName('body')[0].style.backgroundColor = '';
     }
     render() {
+        if (this.state.err) {
+            return <ErrorInfo info={this.state.err.message}/>
+        }
         const music = this.state.music;
         if (!music) {
             return <Loader />;
