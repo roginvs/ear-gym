@@ -22,6 +22,7 @@ const ru = {
     error: "Ошибка",
     gain: "Усиление",
     gaindesc: "Нужно услышать усиление/подавление громкости в дБ",
+    back: "Назад"
 }
 const en: typeof ru = {
     title: "Ear Gym",
@@ -47,6 +48,7 @@ const en: typeof ru = {
     error: "Error",
     gain: "Gain",
     gaindesc: "Find volume boost/reduce in dB",
+    back: "Back",
 }
 
 const l = navigator.language === 'ru' ? ru : en;

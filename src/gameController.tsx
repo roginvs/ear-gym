@@ -16,19 +16,21 @@ interface GameControllerState {
 }
 
 const STAGES_COUNT = 20;
-const LIVES_MAX = 5;
+const LIVES_MAX = 3;
 export class GameController extends React.Component<
     {
         audioCtx: AudioContext;
         game: Game;
         musicType: MusicType;
         playSound: GameSoundPlayer;
-        onReturn: (maxLevelAchieved: number) => void;
+        startLevel: number;
+        onReturn: () => void;
+        onNewLevel: (levelNum: number) => void;
     },
     GameControllerState
 > {
     state: GameControllerState = {
-        level: 1,
+        level: this.props.startLevel,
         stage: 1,
         lives: LIVES_MAX,
         music: undefined
@@ -123,8 +125,9 @@ export class GameController extends React.Component<
                                 const stage = this.state.stage;
                                 const level = this.state.level;
                                 if (stage >= MAX_STAGES) {
-                                    if (level >= this.props.game.maxLevels) {
-                                        this.props.onReturn(level + 1);
+                                    this.props.onNewLevel(level + 1);
+                                    if (level >= this.props.game.maxLevels) {                                        
+                                        this.props.onReturn();
                                     } else {
                                         this.setState({
                                             level: level + 1,
@@ -144,7 +147,7 @@ export class GameController extends React.Component<
                     <div className="text-center">
                         <button
                             onClick={() =>
-                                this.props.onReturn(this.state.level)
+                                this.props.onReturn()
                             }
                             className={classNames("btn btn-secondary mx-1")}
                         >
