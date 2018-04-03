@@ -36,6 +36,10 @@ export class GameController extends React.Component<
                 .map(name => `media/${this.props.musicType}/${name}`)
                 .map(url => urlToAudioBuffer(this.props.audioCtx, url))
         ).then(music => this.setState({ music }));
+        document.getElementsByTagName('body')[0].style.backgroundColor = 'lightblue';
+    }
+    componentWillUnmount() {
+        document.getElementsByTagName('body')[0].style.backgroundColor = '';
     }
     render() {
         const music = this.state.music;
@@ -45,19 +49,19 @@ export class GameController extends React.Component<
         return (
             <div className="bg-dark py-2">
                 <div
-                    className="d-flex justify-content-between mx-2"
+                    className="row mx-2"
                     style={{
                         color: "lightgrey"
                     }}
                 >
-                    <div>
+                    <div className="col-4 text-left">
                         <div>
                             <b>{this.state.level}</b>
                         </div>
                         <div>Level</div>
                     </div>
 
-                    <div className="text-center">
+                    <div className="col-4 text-center">
                         <div>
                             <b>
                                 {this.state.stage} / {STAGES_COUNT}
@@ -66,7 +70,7 @@ export class GameController extends React.Component<
                         <div>Stage</div>
                     </div>
 
-                    <div className="text-right">
+                    <div className="col-4 text-right">
                         <div>
                             <b>
                                 {range(0, this.state.lives).map(i => (

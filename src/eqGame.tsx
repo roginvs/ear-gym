@@ -272,7 +272,7 @@ class EqStage extends React.Component<GameStageRenderProps,GameState>{
         this.biquadFilter.connect(this.props.audioCtx.destination);
 
         source.loop = true;
-        source.start(0, Math.random() * music.duration);
+        source.start(0, 0);
     };
 
     setQAndGain = () => {
@@ -312,8 +312,8 @@ class EqStage extends React.Component<GameStageRenderProps,GameState>{
         const freqMin = correctFreq / 2 ** (q / 2);
         const correct = freq >= freqMin && freq <= freqMax;
         console.info(
-            `level=${this.props.level}
-            } answered=${freq} correct=${correctFreq} ` +
+            `level=${this.props.level} ` + 
+            `answered=${freq} correct=${correctFreq} ` +
                 `freqMin=${freqMin} freqMax=${freqMax} correct=${correct}`
         );
         if (correct) {
