@@ -20,8 +20,8 @@ const ru = {
     fxoff: "Выкл",
     gameOver: "Игра окончена",
     error: "Ошибка",
-    gain: "gain",
-    gaindesc: "gaindesc",
+    gain: "Усиление",
+    gaindesc: "Нужно услышать усиление/подавление громкости в дБ",
 }
 const en: typeof ru = {
     title: "Ear Gym",
@@ -45,8 +45,8 @@ const en: typeof ru = {
     fxoff: "Fx off",
     gameOver: "Game over",
     error: "Error",
-    gain: "gain",
-    gaindesc: "gaindesc",
+    gain: "Gain",
+    gaindesc: "Find volume boost/reduce in dB",
 }
 
 const l = navigator.language === 'ru' ? ru : en;

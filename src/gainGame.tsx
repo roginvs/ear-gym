@@ -65,9 +65,8 @@ interface GameState {
     firstGain?: number;
 }
 
-const DIST_CHOICES = [
-    //[6, 2],
-    [3, 3],
+const DIST_CHOICES = [    
+    [6, 2],    
     [5, 2],
     [4, 3],
     [3, 4],
@@ -110,8 +109,8 @@ class GainStage extends React.Component<GameStageRenderProps, GameState> {
             Math.floor(Math.random() * (startMax - startMin)) + startMin;
         
         const correctId = Math.floor(Math.random() * gainNumbers);
-        console.info(`startMin=${startMin} startMax=${startMax} firstGain=${firstGain} correctId=${correctId} `+
-    `gainStep=${gainStep} gainNumbers=${gainNumbers} correctdb=${firstGain + correctId*gainStep}`);
+        // console.info(`startMin=${startMin} startMax=${startMax} firstGain=${firstGain} correctId=${correctId} `+
+    // `gainStep=${gainStep} gainNumbers=${gainNumbers} correctdb=${firstGain + correctId*gainStep}`);
 
         this.setState({
             firstGain,
@@ -147,8 +146,9 @@ class GainStage extends React.Component<GameStageRenderProps, GameState> {
             const [gainStep, gainNumbers] = DIST_CHOICES[this.props.level-1];
             const gainDb =
                 this.state.firstGain + this.state.correctId * gainStep;                
+            /* "gainDb / 20" instead of "/10" because decibells is power measure */
             this.fx.gain.setValueAtTime(
-                this.state.fxActive ? 10 ** (gainDb / 20) : 1, // why 20?
+                this.state.fxActive ? 10 ** (gainDb / 20) : 1,
                 0
             );
         }
