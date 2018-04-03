@@ -124,6 +124,7 @@ export class GameController extends React.Component<
                                     const level = this.state.level;
                                     if (stage >= MAX_STAGES) {
                                         this.props.onNewLevel(level + 1);
+                                        this.props.playSound('levelup');
                                         if (
                                             level >= this.props.game.maxLevels
                                         ) {

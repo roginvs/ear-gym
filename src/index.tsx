@@ -15,15 +15,17 @@ const root = document.getElementById("root");
     const audioCtx = new AudioContext();
 
     console.info(`Loading data`);
-    const [correct, wrong, gameover] = await Promise.all([
+    const [correct, wrong, gameover, levelup] = await Promise.all([
         gameSound(audioCtx, "correct"),
         gameSound(audioCtx, "wrong"),
-        gameSound(audioCtx, "gameover")
+        gameSound(audioCtx, "gameover"),
+        gameSound(audioCtx, "levelup")
     ]);
     const gameSounds = {
         correct,
         wrong,
-        gameover
+        gameover,
+        levelup
     };
     const playSound: GameSoundPlayer = type => {
         const source = audioCtx.createBufferSource();

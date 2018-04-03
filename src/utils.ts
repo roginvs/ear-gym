@@ -1,4 +1,4 @@
-export type GameSound = 'correct' | 'wrong' | 'gameover';
+export type GameSound = 'correct' | 'wrong' | 'gameover' | 'levelup';
 export type GameSoundPlayer = (sound: GameSound) => void
 
 export function urlToAudioBuffer(audioCtx: AudioContext, url: string) {
