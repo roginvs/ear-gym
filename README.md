@@ -8,5 +8,5 @@
 - [x] Gain game
 - [ ] Other games
 - [ ] Refactor gameRenders
-- [ ] possibility to start game at last achieved level
+- [x] possibility to start game at last achieved level
 - [x] tothink: to clear lives on level start?
