@@ -8,9 +8,9 @@ import l from './lang';
 export interface GameStageRenderProps {
     music: AudioBuffer[];
     audioCtx: AudioContext;
-    level: number;
-    playSound: GameSoundPlayer;
-    onReturn: (isOk: boolean | undefined) => void;
+    level: number;    
+    onAnswer: (isOk: boolean) => void;
+    onReturn: () => void,
 }
 
 export interface Game {

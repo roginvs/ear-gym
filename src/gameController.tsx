@@ -12,10 +12,11 @@ interface GameControllerState {
     lives: number;
     music?: AudioBuffer[];
     err?: Error;
+    gameOver?: boolean    
 }
 
 const STAGES_COUNT = 20;
-
+const LIVES_MAX = 5;
 export class GameController extends React.Component<
     {
         audioCtx: AudioContext;
@@ -29,7 +30,7 @@ export class GameController extends React.Component<
     state: GameControllerState = {
         level: 1,
         stage: 1,
-        lives: 5,
+        lives: LIVES_MAX,
         music: undefined
     };
     componentDidMount() {
@@ -79,40 +80,46 @@ export class GameController extends React.Component<
                     <div className="col-4 text-right">
                         <div>
                             <b>
+                            {range(this.state.lives, LIVES_MAX).map(i => (
+                                    <i key={i} className="fa fa-fw" />
+                                ))}                                
                                 {range(0, this.state.lives).map(i => (
                                     <i key={i} className="fa fa-user fa-fw" />
-                                ))}
+                                ))}                                
                             </b>
                         </div>
                         <div>{l.lives}</div>
                     </div>
                 </div>
-                {this.state.lives > 0 ? (
+                {! this.state.gameOver ? (
                     <div key={this.state.level + "-" + this.state.stage}>
                         {this.props.game.stageRender({
                             level: this.state.level,
-                            audioCtx: this.props.audioCtx,
-                            playSound: this.props.playSound,
+                            audioCtx: this.props.audioCtx,                            
                             music,
-                            onReturn: result => {
-                                if (result === undefined) {
-                                    this.props.onReturn(this.state.level);
-                                    return;
-                                }
-                                if (!result) {
-                                    this.setState(
-                                        {
-                                            lives: this.state.lives - 1
-                                        },
-                                        () => {
-                                            if (this.state.lives === 0) {
-                                                this.props.playSound(
-                                                    "gameover"
-                                                );
-                                            }
-                                        }
-                                    );
-                                }
+                            
+                            onAnswer: correct => {
+                                if (correct) {
+                                    this.props.playSound('correct')
+                                } else {
+                                        this.props.playSound('wrong');
+                                        this.setState(
+                                            {
+                                                lives: this.state.lives - 1
+                                            });                                                                                    
+                                } 
+                            },
+                            onReturn: () => {  
+                                
+                                    if (this.state.lives === 0) {
+                                        this.props.playSound(
+                                            "gameover"
+                                        );
+                                        this.setState({
+                                            gameOver: true
+                                        })
+                                    }
+                                                                              
                                 const stage = this.state.stage;
                                 const level = this.state.level;
                                 if (stage >= MAX_STAGES) {

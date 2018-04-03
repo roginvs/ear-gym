@@ -316,13 +316,10 @@ class EqStage extends React.Component<GameStageRenderProps,GameState>{
             `answered=${freq} correct=${correctFreq} ` +
                 `freqMin=${freqMin} freqMax=${freqMax} correct=${correct}`
         );
-        if (correct) {
-            this.props.playSound('correct')
-        } else {
-                this.props.playSound('wrong')
-        }        
+        
+        this.props.onAnswer(correct);     
         setTimeout(() => {
-            this.props.onReturn(correct)
+            this.props.onReturn()
         }, 3000);
     };
 
