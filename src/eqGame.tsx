@@ -300,7 +300,7 @@ class EqStage extends React.Component<
     setQAndGain = () => {
         const [q, gain] = EQ_STAGES_Q_GAIN[this.props.level - 1];
         if (this.biquadFilter) {
-            this.biquadFilter.Q.setValueAtTime(q, 0);
+            this.biquadFilter.Q.setValueAtTime(q / 2, 0);
             this.biquadFilter.gain.setValueAtTime(
                 this.state.fxActive
                     ? this.props.type === "plus" ? gain : -gain
