@@ -149,12 +149,36 @@ export class GameController extends React.Component<
                     </div>
                 ) : (
                     <div className="text-center">
-                        <button
-                            onClick={() => this.props.onReturn()}
-                            className={classNames("btn btn-secondary mx-1")}
+                        <div
+                            className="my-4"
+                            style={{
+                                color: "lightgrey"
+                            }}
                         >
-                            {l.gameOver}
-                        </button>
+                            <h5>{l.gameOver}</h5>
+                        </div>
+                        <div className="mb-2">
+                            <button
+                                onClick={() =>
+                                    this.setState({
+                                        gameOver: false,
+                                        lives: LIVES_MAX,
+                                        stage: 1
+                                    })
+                                }
+                                className={classNames("btn btn-secondary mx-1")}
+                            >
+                                <i className="fa fa-repeat" /> {l.startAgain}
+                            </button>
+                        </div>
+                        <div className="mb-2">
+                            <button
+                                onClick={() => this.props.onReturn()}
+                                className={classNames("btn btn-secondary mx-1")}
+                            >
+                                <i className="fa fa-sign-out" /> {l.exit}
+                            </button>
+                        </div>                        
                     </div>
                 )}
             </div>
