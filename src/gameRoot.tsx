@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Game } from "./game";
 import { GameController } from "./gameController";
-import { MusicType, GAME_MUSIC_TYPES } from "./music";
+import { MusicType, GAME_MUSIC_TYPES, musicTypeToName } from "./music";
 import { EQ_GAME } from "./eqGame";
 import { DivFadeinCss } from "./common";
 import { range, GameSoundPlayer } from "./utils";
@@ -67,7 +67,7 @@ export class GameRoot extends React.Component<
                                                         });
                                                     }}
                                                 >
-                                                    <div>{musicType}</div>
+                                                    <div>{musicTypeToName(musicType)}</div>
                                                     <div>
                                                         {range(
                                                             1,

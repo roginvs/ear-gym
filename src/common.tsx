@@ -1,5 +1,5 @@
 import * as React from "react";
-
+import l from './lang';
 
 export class DivFadeinCss extends React.Component<
     {
@@ -57,7 +57,7 @@ export class Loader extends React.Component<{
         return (
             <DivFadeinCss className="p-3 text-center">
                 <i className="fa fa-spinner fa-spin" />
-                <span> Загрузка{this.props.info ? ' ' + this.props.info : ''}...</span>
+                <span> {l.loading}{this.props.info ? ' ' + this.props.info : ''}...</span>
             </DivFadeinCss>
         );
     }
@@ -71,7 +71,7 @@ export class ErrorInfo extends React.Component<{
         return (
             <DivFadeinCss className="p-3 text-center text-danger">
                 <i className="fa fa-times" />
-                <span> {this.props.info || "Ошибка"}</span>
+                <span> {this.props.info || l.error}</span>
             </DivFadeinCss>
         );
     }

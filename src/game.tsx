@@ -3,6 +3,7 @@ import * as React from 'react';
 export const MAX_STAGES = 20;
 import classnames from 'classnames';
 import { GameSoundPlayer } from './utils';
+import l from './lang';
 
 export interface GameStageRenderProps {
     music: AudioBuffer[];
@@ -44,9 +45,9 @@ export class FxOnOffButton extends React.Component<
                     })}
                 />
                 {this.props.type === "on" ? (
-                    <span>Fx on</span>
+                    <span>{l.fxon}</span>
                 ) : (
-                    <span>Fx off</span>
+                    <span>{l.fxoff}</span>
                 )}
             </button>
         );

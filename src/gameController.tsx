@@ -4,6 +4,7 @@ import { Loader, ErrorInfo } from "./common";
 import { MusicType, musicList } from "./music";
 import { Game, MAX_STAGES } from "./game";
 import classNames from "classnames";
+import l from "./lang";
 
 interface GameControllerState {
     level: number;
@@ -63,7 +64,7 @@ export class GameController extends React.Component<
                         <div>
                             <b>{this.state.level}</b>
                         </div>
-                        <div>Level</div>
+                        <div>{l.level}</div>
                     </div>
 
                     <div className="col-4 text-center">
@@ -72,7 +73,7 @@ export class GameController extends React.Component<
                                 {this.state.stage} / {STAGES_COUNT}
                             </b>
                         </div>
-                        <div>Stage</div>
+                        <div>{l.stage}</div>
                     </div>
 
                     <div className="col-4 text-right">
@@ -83,7 +84,7 @@ export class GameController extends React.Component<
                                 ))}
                             </b>
                         </div>
-                        <div>Lives</div>
+                        <div>{l.lives}</div>
                     </div>
                 </div>
                 {this.state.lives > 0 ? (
@@ -139,7 +140,7 @@ export class GameController extends React.Component<
                             }
                             className={classNames("btn btn-secondary mx-1")}
                         >
-                            Game over
+                            {l.gameOver}
                         </button>
                     </div>
                 )}

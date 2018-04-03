@@ -1,5 +1,5 @@
 import * as React from 'react';
-
+import l from './lang';
 import {GameStageRenderProps, Game, FxOnOffButton} from './game';
 
 
@@ -106,7 +106,7 @@ class EqSelector extends React.Component<EqSelectorProps, EqSelectorState> {
                                     fontWeight: "bold"
                                 }}
                             >
-                                {selectedFreq}Hz
+                                {selectedFreq}{l.hz}
                             </span>
                         </div>
                     ) : null}
@@ -133,7 +133,7 @@ class EqSelector extends React.Component<EqSelectorProps, EqSelectorState> {
                                 }}
                             >
                                 {" "}
-                                {this.props.correctFreq}Hz
+                                {this.props.correctFreq}{l.hz}
                             </span>
                         </div>
                     ) : null}
@@ -181,7 +181,7 @@ class EqSelector extends React.Component<EqSelectorProps, EqSelectorState> {
                                     fontSize: "0.7em"
                                 }}
                             >
-                                {Math.round(100 / Math.sqrt(2) * 2 ** (i - 1))}Hz
+                                {Math.round(100 / Math.sqrt(2) * 2 ** (i - 1))}{l.hz}
                             </span>
                         </span>
                     ))}
@@ -204,7 +204,7 @@ class EqSelector extends React.Component<EqSelectorProps, EqSelectorState> {
                                     fontSize: "0.7em"
                                 }}
                             >
-                                {100 * 2 ** (i - 1)}Hz
+                                {100 * 2 ** (i - 1)}{l.hz}
                             </span>
                         </span>
                     ))}
@@ -364,8 +364,8 @@ class EqStage extends React.Component<GameStageRenderProps,GameState>{
 
 export const EQ_GAME: Game = {
     id: 'eqplus',
-    name: 'Equalizer',
-    description: 'Find boosted frequency',
+    name: l.eqplus,
+    description: l.eqplusdesc,
     maxLevels: 8,
     stageRender: props => <EqStage {...props}/>
 }
