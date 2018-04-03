@@ -40,12 +40,12 @@ export class GameRoot extends React.Component<
         return (
             <div className="container mt-2">
                 {!game || !musicType ? (
-                    <DivFadeinCss className="" key="gamelist">
-                    <div className="container mt-2 text-center">
+                    <DivFadeinCss className="mt-2" key="gamelist">
+                    <div className="container mb-2 text-center">
                     <h1>{l.welcome}</h1>
                     <p>{l.welcome2}</p>
                     </div>
-                        <div className="container mt-2">
+                        <div className="container mb-4">
                             {GAMES.map(game => (
                                 <div className="card mb-2" key={game.id}>
                                     <div className="card-body">
@@ -103,6 +103,11 @@ export class GameRoot extends React.Component<
                                     </div>
                                 </div>
                             ))}
+                        </div>
+                        <div className="container mt-2 text-center">
+                        <p className="text-muted">
+                        <a href="https://github.com/roginvs/ear-gym">https://github.com/roginvs/ear-gym</a>
+                        </p>
                         </div>
                     </DivFadeinCss>
                 ) : (
