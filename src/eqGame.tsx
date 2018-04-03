@@ -298,7 +298,7 @@ class EqStage extends React.Component<
     };
 
     setQAndGain = () => {
-        const [q, gain] = EQ_STAGES_Q_GAIN[this.props.level];
+        const [q, gain] = EQ_STAGES_Q_GAIN[this.props.level-1];
         if (this.biquadFilter) {
             this.biquadFilter.Q.setValueAtTime(q, 0);
             this.biquadFilter.gain.setValueAtTime(
@@ -330,7 +330,7 @@ class EqStage extends React.Component<
             this.biquadFilter.disconnect();
             this.biquadFilter = undefined;
         }
-        const [q, gain] = EQ_STAGES_Q_GAIN[this.props.level];
+        const [q, gain] = EQ_STAGES_Q_GAIN[this.props.level-1];
         const freqMax = correctFreq * 2 ** (q / 2);
         const freqMin = correctFreq / 2 ** (q / 2);
         const correct = freq >= freqMin && freq <= freqMax;
@@ -351,7 +351,7 @@ class EqStage extends React.Component<
     };
 
     render() {
-        const [q, gain] = EQ_STAGES_Q_GAIN[this.props.level];
+        const [q, gain] = EQ_STAGES_Q_GAIN[this.props.level-1];
         return (
             <div>
                 <EqSelector
@@ -364,6 +364,7 @@ class EqStage extends React.Component<
                     onAnswer={this.onAnswer}
                 />
                 <div className="text-center">
+
                     <FxOnOffButton
                         active={this.state.fxActive}
                         type="off"

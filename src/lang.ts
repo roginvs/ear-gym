@@ -15,10 +15,13 @@ const ru = {
     stage: "Этап",
     lives: "Жизни",
     hz: "Гц",
+    db: "дБ",
     fxon: "Вкл",
     fxoff: "Выкл",
     gameOver: "Игра окончена",
     error: "Ошибка",
+    gain: "gain",
+    gaindesc: "gaindesc",
 }
 const en: typeof ru = {
     title: "Ear Gym",
@@ -37,10 +40,13 @@ const en: typeof ru = {
     stage: "Stage",
     lives: "Lives",
     hz: "Hz",
+    db: "dВ",
     fxon: "Fx on",
     fxoff: "Fx off",
     gameOver: "Game over",
     error: "Error",
+    gain: "gain",
+    gaindesc: "gaindesc",
 }
 
 const l = navigator.language === 'ru' ? ru : en;

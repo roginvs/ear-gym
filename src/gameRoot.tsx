@@ -7,6 +7,7 @@ import { DivFadeinCss } from "./common";
 import { range, GameSoundPlayer } from "./utils";
 import classnames from "classnames";
 import l from "./lang";
+import { GAIN_GAME } from "./gainGame";
 
 const LS_HIGH_SCORES_PREFIX = "highscores";
 function loadHighScore(game: Game, musicType: MusicType) {
@@ -24,7 +25,7 @@ interface GameRootState {
     playingMusicType?: MusicType;
 }
 
-const GAMES: Game[] = [EQ_GAME_PLUS, EQ_GAME_MINUS];
+const GAMES: Game[] = [EQ_GAME_PLUS, EQ_GAME_MINUS, GAIN_GAME];
 
 export class GameRoot extends React.Component<
     {
