@@ -267,7 +267,7 @@ class EqStage extends React.Component<
             musicType === "music" || musicType === "drums"
                 ? Math.round(100 * 2 ** (Math.random() * 7))
                 : musicType === "piano" || musicType === "electricguitar"
-                    ? Math.round(100 * 2 ** (Math.random() * 6))
+                    ? Math.round(100 * 2 ** (Math.random() * 5) * Math.sqrt(2))
                     : assertNever(musicType);
         this.setState({
             correctFreq,
