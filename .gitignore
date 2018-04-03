@@ -1,6 +1,3 @@
 dist
 node_modules
-assets/media/voice/*
-assets/media/piano/*
-assets/media/music/*
 tmp

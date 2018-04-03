@@ -1,6 +1,6 @@
 import { assertNever } from "./utils";
 
-export type MusicType = 'music' | 'piano' | 'voice';
+export type MusicType = 'music' | 'piano' | 'drums' | 'electricguitar';
 
 export function musicList(type: MusicType) {
     return type ==='music' ? [
@@ -15,12 +15,15 @@ export function musicList(type: MusicType) {
         "pi-009.mp3",
         "pi-010.mp3",        
     ] : type === 'piano' ? [
-        "Joe Hisaishi - Howl's Moving Castle.mp3",
-        "Kevin MacLeod - Merry Go.mp3"
-    ] : type === 'voice' ? [        
-        "Smeshariki - kuzinatra.mp3"
+        "piano-001.mp3",
+        "piano-002.mp3",
+        "piano-003.mp3",        
+    ] : type === 'drums' ? [        
+        "drums.mp3"
+    ] : type === 'electricguitar' ? [        
+        "guitar.mp3"
     ] : assertNever(type);
 };
 
-export const GAME_MUSIC_TYPES: MusicType[] = ['music', 'piano', 'voice'];
+export const GAME_MUSIC_TYPES: MusicType[] = ['music', 'piano', 'drums', 'electricguitar'];
 
