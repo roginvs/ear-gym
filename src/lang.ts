@@ -1,5 +1,7 @@
 const ru = {
     title: 'Ear Gym',
+    welcome: "Добро пожаловать в Ear Gym!",
+    welcome2: "Здесь вы можете тренировать свои уши",
     loading: "Загрузка",
     music: "Музыка",
     piano: "Фортепиано",
@@ -7,6 +9,8 @@ const ru = {
     electricguitar: "Электрогитара",
     eqplus: "Эквалайзер усиление",
     eqplusdesc: "Нужно услышать какая частота была усилена",
+    eqminus: "Эквалайзер подавление",
+    eqminusdesc: "Нужно услышать какая частота была подавлена",
     level: "Уровень",
     stage: "Этап",
     lives: "Жизни",
@@ -18,6 +22,8 @@ const ru = {
 }
 const en: typeof ru = {
     title: "Ear Gym",
+    welcome: "Welcome to Ear Gym!",
+    welcome2: "Here you can train you ears",
     loading: "Loading",
     music: "Music",
     piano: "Piano",
@@ -25,6 +31,8 @@ const en: typeof ru = {
     electricguitar: "Electric guitar",
     eqplus: "Equalizer boost",
     eqplusdesc: "Find boosted frequency",
+    eqminus: "Equalizer cut",
+    eqminusdesc: "Find cut frequency",
     level: "Level",
     stage: "Stage",
     lives: "Lives",

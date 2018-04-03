@@ -2,10 +2,11 @@ import * as React from "react";
 import { Game } from "./game";
 import { GameController } from "./gameController";
 import { MusicType, GAME_MUSIC_TYPES, musicTypeToName } from "./music";
-import { EQ_GAME } from "./eqGame";
+import { EQ_GAME_PLUS, EQ_GAME_MINUS } from "./eqGame";
 import { DivFadeinCss } from "./common";
 import { range, GameSoundPlayer } from "./utils";
 import classnames from "classnames";
+import l from "./lang";
 
 const LS_HIGH_SCORES_PREFIX = "highscores";
 function loadHighScore(game: Game, musicType: MusicType) {
@@ -23,7 +24,7 @@ interface GameRootState {
     playingMusicType?: MusicType;
 }
 
-const GAMES: Game[] = [EQ_GAME];
+const GAMES: Game[] = [EQ_GAME_PLUS, EQ_GAME_MINUS];
 
 export class GameRoot extends React.Component<
     {
@@ -40,9 +41,13 @@ export class GameRoot extends React.Component<
             <div className="container mt-2">
                 {!game || !musicType ? (
                     <DivFadeinCss className="" key="gamelist">
+                    <div className="container mt-2 text-center">
+                    <h1>{l.welcome}</h1>
+                    <p>{l.welcome2}</p>
+                    </div>
                         <div className="container mt-2">
                             {GAMES.map(game => (
-                                <div className="card" key={game.id}>
+                                <div className="card mb-2" key={game.id}>
                                     <div className="card-body">
                                         <h5 className="card-title">
                                             {game.name}

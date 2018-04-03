@@ -235,7 +235,12 @@ const EQ_STAGES_Q_GAIN = [
     [1, 3]
 ];
 
-class EqStage extends React.Component<GameStageRenderProps, GameState> {
+class EqStage extends React.Component<
+    GameStageRenderProps & {
+        type: "plus" | "minus";
+    },
+    GameState
+> {
     mounted = false;
     state: GameState = {
         fxActive: false
@@ -297,7 +302,9 @@ class EqStage extends React.Component<GameStageRenderProps, GameState> {
         if (this.biquadFilter) {
             this.biquadFilter.Q.setValueAtTime(q, 0);
             this.biquadFilter.gain.setValueAtTime(
-                this.state.fxActive ? gain : 0,
+                this.state.fxActive
+                    ? this.props.type === "plus" ? gain : -gain
+                    : 0,
                 0
             );
         }
@@ -374,10 +381,18 @@ class EqStage extends React.Component<GameStageRenderProps, GameState> {
     }
 }
 
-export const EQ_GAME: Game = {
+export const EQ_GAME_PLUS: Game = {
     id: "eqplus",
     name: l.eqplus,
     description: l.eqplusdesc,
     maxLevels: 8,
-    stageRender: props => <EqStage {...props} />
+    stageRender: props => <EqStage {...props} type="plus" />
+};
+
+export const EQ_GAME_MINUS: Game = {
+    id: "eqminus",
+    name: l.eqminus,
+    description: l.eqminusdesc,
+    maxLevels: 8,
+    stageRender: props => <EqStage {...props} type="minus" />
 };
