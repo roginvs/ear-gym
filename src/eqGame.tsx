@@ -1,6 +1,6 @@
 import * as React from "react";
 import l from "./lang";
-import { GameStageRenderProps, Game, FxOnOffButton } from "./game";
+import { GameStageRenderProps, Game, FxOnOffButton, GameBottom } from "./game";
 import { assertNever } from "./utils";
 
 interface EqSelectorState {
@@ -298,7 +298,7 @@ class EqStage extends React.Component<
     };
 
     setQAndGain = () => {
-        const [q, gain] = EQ_STAGES_Q_GAIN[this.props.level-1];
+        const [q, gain] = EQ_STAGES_Q_GAIN[this.props.level - 1];
         if (this.biquadFilter) {
             this.biquadFilter.Q.setValueAtTime(q, 0);
             this.biquadFilter.gain.setValueAtTime(
@@ -330,7 +330,7 @@ class EqStage extends React.Component<
             this.biquadFilter.disconnect();
             this.biquadFilter = undefined;
         }
-        const [q, gain] = EQ_STAGES_Q_GAIN[this.props.level-1];
+        const [q, gain] = EQ_STAGES_Q_GAIN[this.props.level - 1];
         const freqMax = correctFreq * 2 ** (q / 2);
         const freqMin = correctFreq / 2 ** (q / 2);
         const correct = freq >= freqMin && freq <= freqMax;
@@ -340,10 +340,7 @@ class EqStage extends React.Component<
                 `freqMin=${freqMin} freqMax=${freqMax} correct=${correct}`
         );
 
-        this.props.onAnswer(correct);
-        setTimeout(() => {
-            this.props.onReturn();
-        }, 3000);
+        this.props.onAnswer(correct);        
     };
 
     toggleFx = (newFxActive: boolean) => {
@@ -351,7 +348,7 @@ class EqStage extends React.Component<
     };
 
     render() {
-        const [q, gain] = EQ_STAGES_Q_GAIN[this.props.level-1];
+        const [q, gain] = EQ_STAGES_Q_GAIN[this.props.level - 1];
         return (
             <div>
                 <EqSelector
@@ -363,20 +360,12 @@ class EqStage extends React.Component<
                     }
                     onAnswer={this.onAnswer}
                 />
-                <div className="text-center">
 
-                    <FxOnOffButton
-                        active={this.state.fxActive}
-                        type="off"
-                        onClick={() => this.toggleFx(false)}
-                    />
-
-                    <FxOnOffButton
-                        active={!this.state.fxActive}
-                        type="on"
-                        onClick={() => this.toggleFx(true)}
-                    />
-                </div>
+                <GameBottom
+                    fxActive={this.state.fxActive}
+                    toggleFx={this.toggleFx}
+                    onExit={this.props.onExit}
+                />
             </div>
         );
     }

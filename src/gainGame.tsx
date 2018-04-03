@@ -1,6 +1,6 @@
 import * as React from "react";
 import l from "./lang";
-import { GameStageRenderProps, Game, FxOnOffButton } from "./game";
+import { GameStageRenderProps, Game, FxOnOffButton, GameBottom } from "./game";
 import { assertNever, range } from "./utils";
 import classnames from 'classnames';
 
@@ -181,10 +181,7 @@ class GainStage extends React.Component<GameStageRenderProps, GameState> {
                 `correct=${correct}`
         );
 
-        this.props.onAnswer(correct);
-        setTimeout(() => {
-            this.props.onReturn();
-        }, 3000);
+        this.props.onAnswer(correct);        
     };
 
     toggleFx = (newFxActive: boolean) => {
@@ -210,19 +207,13 @@ class GainStage extends React.Component<GameStageRenderProps, GameState> {
                         onAnswer={this.onAnswer}
                     />
                 ) : null}
-                <div className="text-center">
-                    <FxOnOffButton
-                        active={this.state.fxActive}
-                        type="off"
-                        onClick={() => this.toggleFx(false)}
-                    />
 
-                    <FxOnOffButton
-                        active={!this.state.fxActive}
-                        type="on"
-                        onClick={() => this.toggleFx(true)}
-                    />
-                </div>
+                
+                <GameBottom
+                    fxActive={this.state.fxActive}
+                    toggleFx={this.toggleFx}
+                    onExit={this.props.onExit}
+                />
             </div>
         );
     }

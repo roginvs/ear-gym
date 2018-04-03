@@ -12,7 +12,7 @@ interface GameControllerState {
     lives: number;
     music?: AudioBuffer[];
     err?: Error;
-    gameOver?: boolean    
+    gameOver?: boolean;
 }
 
 const STAGES_COUNT = 20;
@@ -40,16 +40,18 @@ export class GameController extends React.Component<
             musicList(this.props.musicType)
                 .map(name => `media/${this.props.musicType}/${name}`)
                 .map(url => urlToAudioBuffer(this.props.audioCtx, url))
-        ).then(music => this.setState({ music }))
-        .catch(err => this.setState({err}))
-        document.getElementsByTagName('body')[0].style.backgroundColor = 'lightblue';
+        )
+            .then(music => this.setState({ music }))
+            .catch(err => this.setState({ err }));
+        document.getElementsByTagName("body")[0].style.backgroundColor =
+            "lightblue";
     }
     componentWillUnmount() {
-        document.getElementsByTagName('body')[0].style.backgroundColor = '';
+        document.getElementsByTagName("body")[0].style.backgroundColor = "";
     }
     render() {
         if (this.state.err) {
-            return <ErrorInfo info={this.state.err.message}/>
+            return <ErrorInfo info={this.state.err.message} />;
         }
         const music = this.state.music;
         if (!music) {
@@ -82,73 +84,73 @@ export class GameController extends React.Component<
                     <div className="col-4 text-right">
                         <div>
                             <b>
-                            {range(this.state.lives, LIVES_MAX).map(i => (
+                                {range(this.state.lives, LIVES_MAX).map(i => (
                                     <i key={i} className="fa fa-fw" />
-                                ))}                                
+                                ))}
                                 {range(0, this.state.lives).map(i => (
                                     <i key={i} className="fa fa-user fa-fw" />
-                                ))}                                
+                                ))}
                             </b>
                         </div>
                         <div>{l.lives}</div>
                     </div>
                 </div>
-                {! this.state.gameOver ? (
+                {!this.state.gameOver ? (
                     <div key={this.state.level + "-" + this.state.stage}>
                         {this.props.game.stageRender({
                             level: this.state.level,
-                            audioCtx: this.props.audioCtx,                            
+                            audioCtx: this.props.audioCtx,
                             music,
                             musicType: this.props.musicType,
                             onAnswer: correct => {
                                 if (correct) {
-                                    this.props.playSound('correct')
+                                    this.props.playSound("correct");
                                 } else {
-                                        this.props.playSound('wrong');
-                                        this.setState(
-                                            {
-                                                lives: this.state.lives - 1
-                                            });                                                                                    
-                                } 
-                            },
-                            onReturn: () => {  
-                                
-                                    if (this.state.lives === 0) {
-                                        this.props.playSound(
-                                            "gameover"
-                                        );
-                                        this.setState({
-                                            gameOver: true
-                                        })
-                                    }
-                                                                              
-                                const stage = this.state.stage;
-                                const level = this.state.level;
-                                if (stage >= MAX_STAGES) {
-                                    this.props.onNewLevel(level + 1);
-                                    if (level >= this.props.game.maxLevels) {                                        
-                                        this.props.onReturn();
-                                    } else {
-                                        this.setState({
-                                            level: level + 1,
-                                            stage: 1,
-                                            lives: LIVES_MAX
-                                        });
-                                    }
-                                } else {
+                                    this.props.playSound("wrong");
                                     this.setState({
-                                        stage: stage + 1
+                                        lives: this.state.lives - 1
                                     });
                                 }
+
+                                setTimeout(() => {
+                                    if (this.state.lives === 0) {
+                                        this.props.playSound("gameover");
+                                        this.setState({
+                                            gameOver: true
+                                        });
+                                    }
+
+                                    const stage = this.state.stage;
+                                    const level = this.state.level;
+                                    if (stage >= MAX_STAGES) {
+                                        this.props.onNewLevel(level + 1);
+                                        if (
+                                            level >= this.props.game.maxLevels
+                                        ) {
+                                            this.props.onReturn();
+                                        } else {
+                                            this.setState({
+                                                level: level + 1,
+                                                stage: 1,
+                                                lives: LIVES_MAX
+                                            });
+                                        }
+                                    } else {
+                                        this.setState({
+                                            stage: stage + 1
+                                        });
+                                    }
+                                }, 3000);
+                            },
+                            onExit: () => {
+                                this.props.onReturn();
                             }
                         })}
                     </div>
                 ) : (
                     <div className="text-center">
                         <button
-                            onClick={() =>
-                                this.props.onReturn()
-                            }
+                            onClick={() => this.props.onReturn()}
                             className={classNames("btn btn-secondary mx-1")}
                         >
                             {l.gameOver}
