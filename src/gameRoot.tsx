@@ -76,7 +76,10 @@ export class GameRoot extends React.Component<
                                                         .musicType
                                                 }
                                             >
-                                                <div className="card w-50 ml-auto mr-auto">
+                                                <div className="card ml-auto mr-auto"
+                                                style={{
+                                                    maxWidth: "20em"
+                                                }}>
                                                     <div className="card-body">
                                                         <h5 className="card-title">
                                                             {musicTypeToName(

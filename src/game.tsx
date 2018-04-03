@@ -65,7 +65,7 @@ export class ExitButton extends React.Component<
         return (
             <button
                 onClick={this.props.onClick}
-                className={classnames("btn btn-secondary mx-1")}
+                className={classnames("btn btn-secondary")}
             >
                 <i className={classnames("fa fa-fw fa-sign-out")} />
             </button>
