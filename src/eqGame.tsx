@@ -336,7 +336,7 @@ export const EQ_GAME_PLUS: Game = {
     name: l.eqplus,
     description: l.eqplusdesc,
     maxLevels: 8,
-    stage: EqStagePlus
+    stage: props => <EqStage {...props} type="plus"/>
 };
 
 export const EQ_GAME_MINUS: Game = {
@@ -344,5 +344,5 @@ export const EQ_GAME_MINUS: Game = {
     name: l.eqminus,
     description: l.eqminusdesc,
     maxLevels: 8,
-    stage: EqStageMinus
+    stage: props => <EqStage {...props} type="minus"/>
 };

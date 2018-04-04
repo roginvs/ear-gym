@@ -159,6 +159,9 @@ export class GameController extends React.Component<
             .catch(err => this.setState({ err }));
         document.getElementsByTagName("body")[0].style.backgroundColor =
             "lightblue";
+
+
+        // setInterval(() => this.forceUpdate(), 3000);
     }
     componentWillUnmount() {
         document.getElementsByTagName("body")[0].style.backgroundColor = "";
@@ -171,7 +174,7 @@ export class GameController extends React.Component<
         if (!musicSrc) {
             return <Loader />;
         }
-        const Stage = this.props.game.stage;
+        
         return (
             <div className="bg-dark py-2">
                 <div
@@ -211,13 +214,14 @@ export class GameController extends React.Component<
                     </div>
                 </div>
                 {!this.state.gameOver ? (
-                    <Stage key={this.state.level + "-" + this.state.stage}
-                        srcAudio={musicSrc}                        
-                        audioCtx={this.props.audioCtx}
-                        fxOn={this.state.fxOn}
-                        level={this.state.level}
-                        musicType={this.props.musicType}
-                        onAnswer={correctness => {
+                    <div key={this.state.level + "-" + this.state.stage}>
+                    {this.props.game.stage({
+                        srcAudio: musicSrc,
+                        audioCtx: this.props.audioCtx,
+                        fxOn: this.state.fxOn,
+                        level: this.state.level,
+                        musicType: this.props.musicType,
+                        onAnswer: correctness => {
                             if (correctness === "right") {
                                 this.props.playSound("correct");
                             } else {
@@ -226,9 +230,11 @@ export class GameController extends React.Component<
                                     lives: this.state.lives - 1
                                 });
                             }
+                        }
 
-                        }}
-                    />
+                        })}
+                        </div>
+                    
                     
                         /* this.props.game.stage({
                             level: this.state.level,

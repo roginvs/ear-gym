@@ -16,12 +16,11 @@ export interface GameStageProps {
     fxOn: boolean;
 }
 
-abstract class GameAbstract extends React.Component<GameStageProps> {}
 
 export interface Game {
     id: string;
     name: string;
     description: string;
     maxLevels: number;
-    stage: typeof GameAbstract;
+    stage: (props: GameStageProps) => JSX.Element;
 }
