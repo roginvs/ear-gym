@@ -1,6 +1,6 @@
 import React from "react";
 import { range, urlToAudioBuffer, GameSoundPlayer } from "./utils";
-import { Loader, ErrorInfo } from "./common";
+import { Loader, ErrorInfo, DivFadeinCss } from "./common";
 import { MusicType, musicList } from "./music";
 import { Game, MAX_STAGES } from "./game";
 import classNames from "classnames";
@@ -114,7 +114,7 @@ export class GameController extends React.Component<
         }
 
         return (
-            <div className="bg-dark py-2">
+            <DivFadeinCss key="gamecontroller" className="bg-dark py-2">
                 <div
                     className="row mx-2"
                     style={{
@@ -256,7 +256,7 @@ export class GameController extends React.Component<
                                 {l.fxon}
                             </button>
 
-                            {this.state.answered ? (
+                            {this.state.answered ? <DivFadeinCss tagName="span">
                                 <button
                                     onClick={() => {
                                         if (this.state.lives > 0) {
@@ -284,11 +284,11 @@ export class GameController extends React.Component<
                                     ) : (
                                         <span>
                                             <i className="fa fa-repeat" />{" "}
-                                            {l.startAgain}}
+                                            {l.startAgain}
                                         </span>
                                     )}
                                 </button>
-                            ) : null}
+                            </DivFadeinCss> : null}
                         </div>
                     </div>
                     <div className="col-2 text-right">
@@ -302,7 +302,7 @@ export class GameController extends React.Component<
                         </button>
                     </div>
                 </div>
-            </div>
+            </DivFadeinCss>
         );
     }
 }
