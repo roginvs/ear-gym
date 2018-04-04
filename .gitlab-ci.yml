@@ -4,7 +4,7 @@ pages:
   script:
   - rm -R dist || true
 #  - rm -R node_modules
-#  - npm install
+  - npm install
   - chmod a+x node_modules/.bin/*
 #  - npm run tsc  
 #  - npm run test
