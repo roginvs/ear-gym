@@ -254,12 +254,8 @@ class EqStage extends React.Component<GameStageProps & {
         this.updateFx();
     }
     componentDidMount() {
-        this.updateFx();
-        const gainNode = this.props.audioCtx.createGain();
-        gainNode.gain.setValueAtTime(0.8, 0);
-
-        this.props.srcAudio.connect(gainNode);
-        gainNode.connect(this.biquadFilter);
+        this.updateFx();        
+        this.props.srcAudio.connect(this.biquadFilter);        
         this.biquadFilter.connect(this.props.audioCtx.destination);
     }
 

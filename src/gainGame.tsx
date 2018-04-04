@@ -86,11 +86,7 @@ class GainStage extends React.Component<GameStageProps, GameState> {
     }
     componentDidMount() {
         this.updateFx();
-        const gainNode = this.props.audioCtx.createGain();
-        gainNode.gain.setValueAtTime(0.8, 0);
-
-        this.props.srcAudio.connect(gainNode);
-        gainNode.connect(this.fx);
+        this.props.srcAudio.connect(this.fx);        
         this.fx.connect(this.props.audioCtx.destination);
     }
 

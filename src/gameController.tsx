@@ -15,7 +15,7 @@ interface GameControllerState {
     stage: number;
     lives: number;
     musicCache?: AudioBuffer[];
-    musicSrc?: AudioBufferSourceNode;
+    musicSrc?: AudioNode;
     err?: Error;
     answered?: boolean;
     fxOn: boolean;
@@ -42,15 +42,21 @@ export class GameController extends React.Component<
     };
     selectMusic = () => {        
         const musicCache = this.state.musicCache;
-        if (musicCache) {
-            const musicSrc = this.props.audioCtx.createBufferSource();
+        if (musicCache) {            
             const i = Math.floor(Math.random() * musicCache.length);
             const music = musicCache[i];
+            
+            const musicSrc = this.props.audioCtx.createBufferSource();
             musicSrc.buffer = music;
             musicSrc.loop = true;
             musicSrc.start(0, 0);
+            
+            const gainNode = this.props.audioCtx.createGain();
+            gainNode.gain.setValueAtTime(0.8, 0);
+            musicSrc.connect(gainNode);
+            
             this.setState({
-                musicSrc
+                musicSrc: gainNode
             });
         } else {
             this.setState({
