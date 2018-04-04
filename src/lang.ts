@@ -1,5 +1,5 @@
 const ru = {
-    title: 'Ear Gym',
+    title: "Ear Gym",
     welcome: "Добро пожаловать в Ear Gym!",
     welcome2: "Здесь вы можете тренировать свои уши",
     loading: "Загрузка",
@@ -25,7 +25,7 @@ const ru = {
     gain: "Усиление",
     gaindesc: "Нужно услышать усиление/подавление громкости в дБ",
     back: "Назад"
-}
+};
 const en: typeof ru = {
     title: "Ear Gym",
     welcome: "Welcome to Ear Gym!",
@@ -52,8 +52,24 @@ const en: typeof ru = {
     error: "Error",
     gain: "Gain",
     gaindesc: "Find volume boost/reduce in dB",
-    back: "Back",
-}
+    back: "Back"
+};
 
-const l = navigator.language === 'ru' ? ru : en;
+function browserLocale() {
+    let lang: string = "";
+
+    if (navigator.languages && navigator.languages.length) {
+        // latest versions of Chrome and Firefox set this correctly
+        lang = navigator.languages[0];
+        //    } else if (navigator.userLanguage) {
+        //      // IE only
+        //      lang = navigator.userLanguage
+    } else {
+        // latest versions of Chrome, Firefox, and Safari set this correctly
+        lang = navigator.language;
+    }
+
+    return lang;
+}
+const l = browserLocale().indexOf("ru") > -1 ? ru : en;
 export default l;
