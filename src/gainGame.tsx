@@ -1,7 +1,7 @@
 import * as React from "react";
 import l from "./lang";
-/*
-import { GameStageRenderProps, Game, FxOnOffButton, GameBottom } from "./game";
+
+import { GameStageProps, Game } from "./game";
 import { assertNever, range } from "./utils";
 import classnames from 'classnames';
 
@@ -13,7 +13,7 @@ interface ChoiceSelectorProps {
 interface ChoiceSelectorState {
     answeredId?: number;
 }
-class ChoiceSelector extends React.Component<
+export class ChoiceSelector extends React.Component<
     ChoiceSelectorProps,
     ChoiceSelectorState
 > {
@@ -59,11 +59,10 @@ class ChoiceSelector extends React.Component<
     }
 }
 
-interface GameState {
-    fxActive: boolean;
-    correctId?: number;
-    answeredId?: number;
-    firstGain?: number;
+interface GameState {   
+    firstGain: number; 
+    correctId: number;
+    answeredId?: number;    
 }
 
 const DIST_CHOICES = [    
@@ -79,30 +78,24 @@ const DIST_CHOICES = [
 
 const GAIN_RANGE = 12;
 
-class GainStage extends React.Component<GameStageRenderProps, GameState> {
-    mounted = false;
-    state: GameState = {
-        fxActive: false
-    };
+class GainStage extends React.Component<GameStageProps, GameState> {
+    fx: GainNode = this.props.audioCtx.createGain();
 
-    componentDidMount() {
-        this.mounted = true;
-        this.startMusic();
+    componentDidUpdate() {
+        this.updateFx();
     }
-    fx?: GainNode;
+    componentDidMount() {
+        this.updateFx();
+        const gainNode = this.props.audioCtx.createGain();
+        gainNode.gain.setValueAtTime(0.8, 0);
 
-    startMusic = () => {
-        if (!this.mounted) {
-            return;
-        }
+        this.props.srcAudio.connect(gainNode);
+        gainNode.connect(this.fx);
+        this.fx.connect(this.props.audioCtx.destination);
+    }
 
-        if (this.fx) {
-            console.warn(`Start when already have fx filter`);
-            this.fx.disconnect();
-            this.fx = undefined;
-        }
+    state: GameState = (() => {
         const musicType = this.props.musicType;
-
         const [gainStep, gainNumbers] = DIST_CHOICES[this.props.level-1];
         const startMin = -GAIN_RANGE;
         const startMax = GAIN_RANGE - gainNumbers * gainStep;
@@ -110,84 +103,33 @@ class GainStage extends React.Component<GameStageRenderProps, GameState> {
             Math.floor(Math.random() * (startMax - startMin)) + startMin;
         
         const correctId = Math.floor(Math.random() * gainNumbers);
-        // console.info(`startMin=${startMin} startMax=${startMax} firstGain=${firstGain} correctId=${correctId} `+
-    // `gainStep=${gainStep} gainNumbers=${gainNumbers} correctdb=${firstGain + correctId*gainStep}`);
 
-        this.setState({
+        return {
             firstGain,
             correctId
-        });
+        }
+    })();
 
-        const source = this.props.audioCtx.createBufferSource();
-        const i = Math.floor(Math.random() * this.props.music.length);
-        const music = this.props.music[i];
-        source.buffer = music;
-
-        this.fx = this.props.audioCtx.createGain();
-
-        this.setFxGain();
-
-        const gainNode = this.props.audioCtx.createGain();
-        gainNode.gain.setValueAtTime(0.8, 0);
-
-        source.connect(gainNode);
-        gainNode.connect(this.fx);
-        this.fx.connect(this.props.audioCtx.destination);
-
-        source.loop = true;
-        source.start(0, 0);
-    };
-
-    setFxGain = () => {
-        if (
-            this.fx &&
-            this.state.firstGain !== undefined &&
-            this.state.correctId !== undefined
-        ) {
-            const [gainStep, gainNumbers] = DIST_CHOICES[this.props.level-1];
+    
+    updateFx() {
+        const [gainStep, gainNumbers] = DIST_CHOICES[this.props.level-1];
             const gainDb =
                 this.state.firstGain + this.state.correctId * gainStep;                
             // "gainDb / 20" instead of "/10" because decibells is power measure 
             this.fx.gain.setValueAtTime(
-                this.state.fxActive ? 10 ** (gainDb / 20) : 1,
+                this.props.fxOn ? 10 ** (gainDb / 20) : 1,
                 0
             );
-        }
-    };
-
-    componentWillUnmount() {
-        this.mounted = false;
-        if (this.fx) {
-            this.fx.disconnect();
-            this.fx = undefined;
-        }
     }
 
-    onAnswer = (answeredId: number) => {
-        const correctId = this.state.correctId;
-        if (correctId === undefined) {
-            return;
-        }
-        this.setState({
-            answeredId
-        });
-        if (this.fx) {
-            this.fx.disconnect();
-            this.fx = undefined;
-        }
-        const correct = answeredId === correctId;
-        console.info(
-            `level=${this.props.level} ` +
-                `answered=${answeredId} correct=${correctId} ` +
-                `correct=${correct}`
-        );
 
-        this.props.onAnswer(correct);        
-    };
 
-    toggleFx = (newFxActive: boolean) => {
-        this.setState({ fxActive: newFxActive }, this.setFxGain);
-    };
+    componentWillUnmount() {     
+            this.fx.disconnect();                    
+    }
+
+
+
 
     render() {
         const [gainStep, gainNumbers] = DIST_CHOICES[this.props.level-1];
@@ -205,16 +147,31 @@ class GainStage extends React.Component<GameStageRenderProps, GameState> {
                                 ? this.state.correctId
                                 : undefined
                         }
-                        onAnswer={this.onAnswer}
+                        onAnswer={answeredId => {
+                            
+    
+        const correctId = this.state.correctId;
+        if (correctId === undefined) {
+            return;
+        }
+        this.setState({
+            answeredId
+        });
+     
+        const correct = answeredId === correctId;
+        console.info(
+            `level=${this.props.level} ` +
+                `answered=${answeredId} correct=${correctId} ` +
+                `correct=${correct}`
+        );
+
+        this.props.onAnswer(correct ? "right" : "wrong");        
+    
+                        }}
                     />
                 ) : null}
 
                 
-                <GameBottom
-                    fxActive={this.state.fxActive}
-                    toggleFx={this.toggleFx}
-                    onExit={this.props.onExit}
-                />
             </div>
         );
     }
@@ -225,6 +182,5 @@ export const GAIN_GAME: Game = {
     name: l.gain,
     description: l.gaindesc,
     maxLevels: 8,
-    stageRender: props => <GainStage {...props} />
+    stage: props => <GainStage {...props} />
 };
-*/

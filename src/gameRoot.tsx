@@ -7,6 +7,7 @@ import { DivFadeinCss } from "./common";
 import { range, GameSoundPlayer } from "./utils";
 import classnames from "classnames";
 import l from "./lang";
+import { GAIN_GAME } from "./gainGame";
 //import { GAIN_GAME } from "./gainGame";
 // import {Collapse} from "reactstrap";
 
@@ -35,7 +36,7 @@ interface GameRootState {
     };
 }
 
-const GAMES: Game[] = [EQ_GAME_PLUS, EQ_GAME_MINUS];
+const GAMES: Game[] = [EQ_GAME_PLUS, EQ_GAME_MINUS, GAIN_GAME];
 
 export class GameRoot extends React.Component<
     {
