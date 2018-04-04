@@ -6,7 +6,8 @@
 
 ## TODO
 - [x] Gain game
-- [ ] Other games: delay, distortion, reverb?, 
+- [ ] Other games: delay
+- [ ] Other games: 3 button (A, both, B): distortion, reverb?, saturator, compressor
 - [ ] Icons for musicTypes
 - [ ] Simplify challenge at low levels
 - [ ] Update React (or add polyfill), use getDerivedStateFromProps instead of key-binding to component instance
