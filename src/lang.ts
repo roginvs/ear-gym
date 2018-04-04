@@ -22,7 +22,7 @@ const ru = {
     exit: "Выход",
     startAgain: "Начать уровень снова",
     error: "Ошибка",
-    gain: "Усиление",
+    gain: "Громкость",
     gaindesc: "Нужно услышать усиление/подавление громкости в дБ",
     back: "Назад"
 };
@@ -50,7 +50,7 @@ const en: typeof ru = {
     exit: "Exit",
     startAgain: "Start level again",
     error: "Error",
-    gain: "Gain",
+    gain: "Volume",
     gaindesc: "Find volume boost/reduce in dB",
     back: "Back"
 };
