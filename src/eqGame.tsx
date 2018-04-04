@@ -1,7 +1,8 @@
 import * as React from "react";
 import l from "./lang";
-import { GameStageRenderProps, Game, FxOnOffButton, GameBottom } from "./game";
 import { assertNever } from "./utils";
+
+import { Game, GameStageProps } from "./game";
 
 interface EqSelectorState {
     x?: number;
@@ -219,8 +220,7 @@ class EqSelector extends React.Component<EqSelectorProps, EqSelectorState> {
 }
 
 interface GameState {
-    fxActive: boolean;
-    correctFreq?: number;
+    correctFreq: number;
     answeredFreq?: number;
 }
 
@@ -235,117 +235,51 @@ const EQ_STAGES_Q_GAIN = [
     [1, 3]
 ];
 
-class EqStage extends React.Component<
-    GameStageRenderProps & {
-        type: "plus" | "minus";
-    },
-    GameState
-> {
-    mounted = false;
+class EqStage extends React.Component<GameStageProps, GameState> {
+    biquadFilter = this.props.audioCtx.createBiquadFilter();
+
     state: GameState = {
-        fxActive: false
+        correctFreq:
+            this.props.musicType === "music" || this.props.musicType === "drums"
+                ? Math.round(100 * 2 ** (Math.random() * 7))
+                : this.props.musicType === "piano" ||
+                  this.props.musicType === "electricguitar"
+                    ? Math.round(100 * 2 ** (Math.random() * 5) * Math.sqrt(2))
+                    : assertNever(this.props.musicType)
     };
 
-    componentDidMount() {
-        this.mounted = true;
-        this.startMusic();
+    componentDidUpdate() {
+        this.updateFx();
     }
-    biquadFilter?: BiquadFilterNode;
-
-    startMusic = () => {
-        if (!this.mounted) {
-            return;
-        }
-
-        if (this.biquadFilter) {
-            console.warn(`Start when already have biquadFilter`);
-            this.biquadFilter.disconnect();
-            this.biquadFilter = undefined;
-        }
-        const musicType = this.props.musicType;
-        const correctFreq =
-            musicType === "music" || musicType === "drums"
-                ? Math.round(100 * 2 ** (Math.random() * 7))
-                : musicType === "piano" || musicType === "electricguitar"
-                    ? Math.round(100 * 2 ** (Math.random() * 5) * Math.sqrt(2))
-                    : assertNever(musicType);
-        this.setState({
-            correctFreq,
-            answeredFreq: undefined
-        });
-
-        const source = this.props.audioCtx.createBufferSource();
-        const i = Math.floor(Math.random() * this.props.music.length);
-        const music = this.props.music[i];
-        source.buffer = music;
-
-        this.biquadFilter = this.props.audioCtx.createBiquadFilter();
-
-        this.biquadFilter.type = "peaking";
-        this.biquadFilter.frequency.setValueAtTime(correctFreq, 0);
-
-        this.setQAndGain();
-
+    componentDidMount() {
+        this.updateFx();
         const gainNode = this.props.audioCtx.createGain();
         gainNode.gain.setValueAtTime(0.8, 0);
 
-        source.connect(gainNode);
+        this.props.srcAudio.connect(gainNode);
         gainNode.connect(this.biquadFilter);
         this.biquadFilter.connect(this.props.audioCtx.destination);
-
-        source.loop = true;
-        source.start(0, 0);
-    };
-
-    setQAndGain = () => {
-        const [q, gain] = EQ_STAGES_Q_GAIN[this.props.level - 1];
-        if (this.biquadFilter) {
-            this.biquadFilter.Q.setValueAtTime(q / 2, 0);
-            this.biquadFilter.gain.setValueAtTime(
-                this.state.fxActive
-                    ? this.props.type === "plus" ? gain : -gain
-                    : 0,
-                0
-            );
-        }
-    };
-
-    componentWillUnmount() {
-        this.mounted = false;
-        if (this.biquadFilter) {
-            this.biquadFilter.disconnect();
-            this.biquadFilter = undefined;
-        }
     }
 
-    onAnswer = (freq: number) => {
-        const correctFreq = this.state.correctFreq;
-        if (correctFreq === undefined) {
-            return;
-        }
-        this.setState({
-            answeredFreq: freq
-        });
-        if (this.biquadFilter) {
-            this.biquadFilter.disconnect();
-            this.biquadFilter = undefined;
-        }
+    updateFx() {
+        this.biquadFilter.type = "peaking";
+        this.biquadFilter.frequency.setValueAtTime(this.state.correctFreq, 0);
+
         const [q, gain] = EQ_STAGES_Q_GAIN[this.props.level - 1];
-        const freqMax = correctFreq * 2 ** (q / 2);
-        const freqMin = correctFreq / 2 ** (q / 2);
-        const correct = freq >= freqMin && freq <= freqMax;
-        console.info(
-            `level=${this.props.level} ` +
-                `answered=${freq} correct=${correctFreq} ` +
-                `freqMin=${freqMin} freqMax=${freqMax} correct=${correct}`
+
+        this.biquadFilter.Q.setValueAtTime(q / 2, 0);
+        this.biquadFilter.gain.setValueAtTime(
+            this.props.fxOn
+                ? gain
+                : //? this.props.type === "plus" ? gain : -gain
+                  0,
+            0
         );
+    }
 
-        this.props.onAnswer(correct);        
-    };
-
-    toggleFx = (newFxActive: boolean) => {
-        this.setState({ fxActive: newFxActive }, this.setQAndGain);
-    };
+    componentWillUnmount() {
+        this.biquadFilter.disconnect();
+    }
 
     render() {
         const [q, gain] = EQ_STAGES_Q_GAIN[this.props.level - 1];
@@ -358,13 +292,27 @@ class EqStage extends React.Component<
                             ? this.state.correctFreq
                             : undefined
                     }
-                    onAnswer={this.onAnswer}
-                />
+                    onAnswer={freq => {
+                        const correctFreq = this.state.correctFreq;
 
-                <GameBottom
-                    fxActive={this.state.fxActive}
-                    toggleFx={this.toggleFx}
-                    onExit={this.props.onExit}
+                        this.setState({
+                            answeredFreq: freq
+                        });
+
+                        const [q, gain] = EQ_STAGES_Q_GAIN[
+                            this.props.level - 1
+                        ];
+                        const freqMax = correctFreq * 2 ** (q / 2);
+                        const freqMin = correctFreq / 2 ** (q / 2);
+                        const correct = freq >= freqMin && freq <= freqMax;
+                        console.info(
+                            `level=${this.props.level} ` +
+                                `answered=${freq} correct=${correctFreq} ` +
+                                `freqMin=${freqMin} freqMax=${freqMax} correct=${correct}`
+                        );
+
+                        this.props.onAnswer(correct ? "right" : "wrong");
+                    }}
                 />
             </div>
         );
@@ -376,7 +324,7 @@ export const EQ_GAME_PLUS: Game = {
     name: l.eqplus,
     description: l.eqplusdesc,
     maxLevels: 8,
-    stageRender: props => <EqStage {...props} type="plus" />
+    stage: EqStage
 };
 
 export const EQ_GAME_MINUS: Game = {
@@ -384,5 +332,5 @@ export const EQ_GAME_MINUS: Game = {
     name: l.eqminus,
     description: l.eqminusdesc,
     maxLevels: 8,
-    stageRender: props => <EqStage {...props} type="minus" />
+    stage: EqStage
 };

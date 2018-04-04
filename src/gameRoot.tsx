@@ -7,7 +7,7 @@ import { DivFadeinCss } from "./common";
 import { range, GameSoundPlayer } from "./utils";
 import classnames from "classnames";
 import l from "./lang";
-import { GAIN_GAME } from "./gainGame";
+//import { GAIN_GAME } from "./gainGame";
 // import {Collapse} from "reactstrap";
 
 const LS_HIGH_SCORES_PREFIX = "highscores";
@@ -35,7 +35,7 @@ interface GameRootState {
     };
 }
 
-const GAMES: Game[] = [EQ_GAME_PLUS, EQ_GAME_MINUS, GAIN_GAME];
+const GAMES: Game[] = [EQ_GAME_PLUS, EQ_GAME_MINUS];
 
 export class GameRoot extends React.Component<
     {
@@ -220,7 +220,7 @@ export class GameRoot extends React.Component<
                     <GameController
                         audioCtx={this.props.audioCtx}
                         game={playing.game}
-                        startLevel={playing.startLevel}
+                        startingLevel={playing.startLevel}
                         playSound={this.props.playSound}
                         musicType={playing.musicType}
                         onNewLevel={newMaxLevel => {

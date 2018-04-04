@@ -1,5 +1,6 @@
 import * as React from "react";
 import l from "./lang";
+/*
 import { GameStageRenderProps, Game, FxOnOffButton, GameBottom } from "./game";
 import { assertNever, range } from "./utils";
 import classnames from 'classnames';
@@ -146,7 +147,7 @@ class GainStage extends React.Component<GameStageRenderProps, GameState> {
             const [gainStep, gainNumbers] = DIST_CHOICES[this.props.level-1];
             const gainDb =
                 this.state.firstGain + this.state.correctId * gainStep;                
-            /* "gainDb / 20" instead of "/10" because decibells is power measure */
+            // "gainDb / 20" instead of "/10" because decibells is power measure 
             this.fx.gain.setValueAtTime(
                 this.state.fxActive ? 10 ** (gainDb / 20) : 1,
                 0
@@ -226,3 +227,4 @@ export const GAIN_GAME: Game = {
     maxLevels: 8,
     stageRender: props => <GainStage {...props} />
 };
+*/
