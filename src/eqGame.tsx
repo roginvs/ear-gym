@@ -235,7 +235,9 @@ const EQ_STAGES_Q_GAIN = [
     [1, 3]
 ];
 
-class EqStage extends React.Component<GameStageProps, GameState> {
+class EqStage extends React.Component<GameStageProps & {
+    type: "plus" | "minus"
+}, GameState> {
     biquadFilter = this.props.audioCtx.createBiquadFilter();
 
     state: GameState = {
@@ -269,10 +271,9 @@ class EqStage extends React.Component<GameStageProps, GameState> {
 
         this.biquadFilter.Q.setValueAtTime(q / 2, 0);
         this.biquadFilter.gain.setValueAtTime(
-            this.props.fxOn
-                ? gain
-                : //? this.props.type === "plus" ? gain : -gain
-                  0,
+            this.props.fxOn ?
+                 this.props.type === "plus" ? gain : -gain
+                  : 0,
             0
         );
     }
@@ -319,12 +320,23 @@ class EqStage extends React.Component<GameStageProps, GameState> {
     }
 }
 
+class EqStagePlus extends React.Component<GameStageProps> {
+    render() {
+        return <EqStage {...this.props} type="plus"/>
+    }
+}
+
+class EqStageMinus extends React.Component<GameStageProps> {
+    render() {
+        return <EqStage {...this.props} type="minus"/>
+    }
+}
 export const EQ_GAME_PLUS: Game = {
     id: "eqplus",
     name: l.eqplus,
     description: l.eqplusdesc,
     maxLevels: 8,
-    stage: EqStage
+    stage: EqStagePlus
 };
 
 export const EQ_GAME_MINUS: Game = {
@@ -332,5 +344,5 @@ export const EQ_GAME_MINUS: Game = {
     name: l.eqminus,
     description: l.eqminusdesc,
     maxLevels: 8,
-    stage: EqStage
+    stage: EqStageMinus
 };
