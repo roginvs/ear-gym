@@ -238,7 +238,7 @@ const EQ_STAGES_Q_GAIN = [
 class EqStage extends React.Component<GameStageProps & {
     type: "plus" | "minus"
 }, GameState> {
-    biquadFilter = this.props.audioCtx.createBiquadFilter();
+    fx = this.props.audioCtx.createBiquadFilter();
 
     state: GameState = {
         correctFreq:
@@ -254,19 +254,22 @@ class EqStage extends React.Component<GameStageProps & {
         this.updateFx();
     }
     componentDidMount() {
-        this.updateFx();        
-        this.props.srcAudio.connect(this.biquadFilter);        
-        this.biquadFilter.connect(this.props.audioCtx.destination);
+        this.updateFx();                
+        const gainNode = this.props.audioCtx.createGain();
+        gainNode.gain.setValueAtTime(0.8, 0);
+        this.props.srcAudio.connect(gainNode);
+        gainNode.connect(this.fx);        
+        this.fx.connect(this.props.audioCtx.destination);
     }
 
     updateFx() {
-        this.biquadFilter.type = "peaking";
-        this.biquadFilter.frequency.setValueAtTime(this.state.correctFreq, 0);
+        this.fx.type = "peaking";
+        this.fx.frequency.setValueAtTime(this.state.correctFreq, 0);
 
         const [q, gain] = EQ_STAGES_Q_GAIN[this.props.level - 1];
 
-        this.biquadFilter.Q.setValueAtTime(q / 2, 0);
-        this.biquadFilter.gain.setValueAtTime(
+        this.fx.Q.setValueAtTime(q / 2, 0);
+        this.fx.gain.setValueAtTime(
             this.props.fxOn ?
                  this.props.type === "plus" ? gain : -gain
                   : 0,
@@ -275,7 +278,7 @@ class EqStage extends React.Component<GameStageProps & {
     }
 
     componentWillUnmount() {
-        this.biquadFilter.disconnect();
+        this.fx.disconnect();
     }
 
     render() {

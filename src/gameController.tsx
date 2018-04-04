@@ -50,13 +50,9 @@ export class GameController extends React.Component<
             musicSrc.buffer = music;
             musicSrc.loop = true;
             musicSrc.start(0, 0);
-            
-            const gainNode = this.props.audioCtx.createGain();
-            gainNode.gain.setValueAtTime(0.8, 0);
-            musicSrc.connect(gainNode);
-            
+                        
             this.setState({
-                musicSrc: gainNode
+                musicSrc
             });
         } else {
             this.setState({
