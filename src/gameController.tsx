@@ -7,106 +7,17 @@ import classNames from "classnames";
 import l from "./lang";
 import classnames from "classnames";
 
-
-
 const STAGES_COUNT = 20;
 const LIVES_MAX = 3;
-
-
-class FxOnOffButton extends React.Component<
-    {
-        active: boolean;
-        type: "on" | "off";
-        onClick: () => void;
-    },
-    {}
-> {
-    render() {
-        return (
-            <button
-                onClick={this.props.onClick}
-                className={classnames("btn btn-secondary mx-1", {
-                    "text-dark": this.props.active
-                })}
-            >
-                <i
-                    className={classnames("fa fa-fw", {
-                        "fa-check-square-o": this.props.type === "on",
-                        "fa-square-o": this.props.type === "off"
-                    })}
-                />
-                {this.props.type === "on" ? (
-                    <span>{l.fxon}</span>
-                ) : (
-                    <span>{l.fxoff}</span>
-                )}
-            </button>
-        );
-    }
-}
-
-class ExitButton extends React.Component<
-    {
-        onClick: () => void;
-    },
-    {}
-> {
-    render() {
-        return (
-            <button
-                onClick={this.props.onClick}
-                className={classnames("btn btn-secondary")}
-            >
-                <i className={classnames("fa fa-fw fa-sign-out")} />
-            </button>
-        );
-    }
-}
-class GameBottom extends React.Component<
-    {
-        fxActive: boolean;
-        toggleFx: (newVal: boolean) => void;
-        onExit: () => void;
-    },
-    {}
-> {
-    render() {
-        return (
-            <div className="row no-gutters mx-2">
-                <div className="col-8 offset-2">
-                    <div className="text-center">
-                        <FxOnOffButton
-                            active={this.props.fxActive}
-                            type="off"
-                            onClick={() => this.props.toggleFx(false)}
-                        />
-
-                        <FxOnOffButton
-                            active={!this.props.fxActive}
-                            type="on"
-                            onClick={() => this.props.toggleFx(true)}
-                        />
-                    </div>
-                </div>
-                <div className="col-2 text-right">
-                
-                    <ExitButton onClick={this.props.onExit} />
-                    </div>
-                
-            </div>
-        );
-    }
-}
-
 
 interface GameControllerState {
     level: number;
     stage: number;
     lives: number;
     musicCache?: AudioBuffer[];
-    musicSrc?: AudioBufferSourceNode,
+    musicSrc?: AudioBufferSourceNode;
     err?: Error;
-    gameOver?: boolean;
+    answered?: boolean;
     fxOn: boolean;
 }
 export class GameController extends React.Component<
@@ -127,39 +38,66 @@ export class GameController extends React.Component<
         lives: LIVES_MAX,
         musicCache: undefined,
         musicSrc: undefined,
-        fxOn: false,
+        fxOn: false
     };
-    updateMusic = () => {
+    startGame = () => {
         const musicCache = this.state.musicCache;
         if (musicCache) {
             const musicSrc = this.props.audioCtx.createBufferSource();
             const i = Math.floor(Math.random() * musicCache.length);
             const music = musicCache[i];
-            musicSrc.buffer = music;            
+            musicSrc.buffer = music;
             musicSrc.loop = true;
             musicSrc.start(0, 0);
             this.setState({
                 musicSrc
-            })
+            });
         } else {
             this.setState({
                 musicSrc: undefined
-            })
+            });
         }
-    }
+    };
+    startNexStage = () => {
+        const stage = this.state.stage;
+        const level = this.state.level;
+        if (stage >= MAX_STAGES) {
+            this.props.onNewLevel(level + 1);
+            this.props.playSound("levelup");
+            if (level >= this.props.game.maxLevels) {
+                this.props.onReturn();
+            } else {
+                this.setState({
+                    level: level + 1,
+                    stage: 1,
+                    lives: LIVES_MAX,
+                    answered: false
+                });
+            }
+        } else {
+            this.setState({
+                stage: stage + 1,
+                answered: false
+            });
+        }
+    };
     componentDidMount() {
         Promise.all(
             musicList(this.props.musicType)
                 .map(name => `media/${this.props.musicType}/${name}`)
                 .map(url => urlToAudioBuffer(this.props.audioCtx, url))
         )
-            .then(musicCache => this.setState({ 
-                musicCache,                
-            }, this.updateMusic))
+            .then(musicCache =>
+                this.setState(
+                    {
+                        musicCache
+                    },
+                    this.startGame
+                )
+            )
             .catch(err => this.setState({ err }));
         document.getElementsByTagName("body")[0].style.backgroundColor =
             "lightblue";
-
 
         // setInterval(() => this.forceUpdate(), 3000);
     }
@@ -174,7 +112,7 @@ export class GameController extends React.Component<
         if (!musicSrc) {
             return <Loader />;
         }
-        
+
         return (
             <div className="bg-dark py-2">
                 <div
@@ -213,8 +151,8 @@ export class GameController extends React.Component<
                         <div>{l.lives}</div>
                     </div>
                 </div>
-                {!this.state.gameOver ? (
-                    <div key={this.state.level + "-" + this.state.stage}>
+
+                <div key={this.state.level + "-" + this.state.stage}>
                     {this.props.game.stage({
                         srcAudio: musicSrc,
                         audioCtx: this.props.audioCtx,
@@ -225,18 +163,24 @@ export class GameController extends React.Component<
                             if (correctness === "right") {
                                 this.props.playSound("correct");
                             } else {
-                                this.props.playSound("wrong");
+                                const lives = this.state.lives - 1;
+                                if (lives > 0) {
+                                    this.props.playSound("wrong");
+                                } else {
+                                    this.props.playSound("gameover");
+                                }
                                 this.setState({
-                                    lives: this.state.lives - 1
+                                    lives
                                 });
                             }
+                            this.setState({
+                                answered: true
+                            });
                         }
+                    })}
+                </div>
 
-                        })}
-                        </div>
-                    
-                    
-                        /* this.props.game.stage({
+                {/* this.props.game.stage({
                             level: this.state.level,
                             audioCtx: this.props.audioCtx,
                             music,
@@ -286,47 +230,78 @@ export class GameController extends React.Component<
                                 this.props.onReturn();
                             }
                         })}
-                    </div> */
-                ) : (
-                    <div className="text-center">
-                        <div
-                            className="my-4"
-                            style={{
-                                color: "lightgrey"
-                            }}
-                        >
-                            <h5>{l.gameOver}</h5>
-                        </div>
-                        <div className="mb-2">
-                            <button
-                                onClick={() =>
-                                    this.setState({
-                                        gameOver: false,
-                                        lives: LIVES_MAX,
-                                        stage: 1
-                                    })
-                                }
-                                className={classNames("btn btn-secondary mx-1")}
-                            >
-                                <i className="fa fa-repeat" /> {l.startAgain}
-                            </button>
-                        </div>
-                        <div className="mb-2">
-                            <button
-                                onClick={() => this.props.onReturn()}
-                                className={classNames("btn btn-secondary mx-1")}
-                            >
-                                <i className="fa fa-sign-out" /> {l.exit}
-                            </button>
-                        </div>                        
-                    </div>
-                )}
+                    </div> */}
 
-                <GameBottom
-                fxActive={this.state.fxOn}
-                toggleFx={fxOn => this.setState({fxOn})}
-                onExit={() => this.props.onReturn()}
-                />
+                <div className="row no-gutters mx-2">
+                    <div className="col-8 offset-2">
+                        <div className="text-center">
+                            <button
+                                onClick={() => this.setState({ fxOn: false })}
+                                className={classnames("btn btn-secondary m-1", {
+                                    "text-dark": this.state.fxOn
+                                })}
+                            >
+                                <i className="fa fa-fw fa-square-o" />
+
+                                {l.fxoff}
+                            </button>
+
+                            <button
+                                onClick={() => this.setState({ fxOn: true })}
+                                className={classnames("btn btn-secondary m-1", {
+                                    "text-dark": !this.state.fxOn
+                                })}
+                            >
+                                <i className="fa fa-fw fa-check-square-o" />
+                                {l.fxon}
+                            </button>
+
+                            {this.state.answered ? (
+                                <button
+                                    onClick={() => {
+                                        if (this.state.lives > 0) {
+                                            this.startNexStage();
+                                        } else {
+                                            this.setState(
+                                                {
+                                                    answered: false,
+                                                    lives: LIVES_MAX,
+                                                    stage: 1
+                                                },
+                                                this.startGame
+                                            );
+                                        }
+                                    }}
+                                    className={classNames(
+                                        "btn btn-secondary m-1 text-dark"
+                                    )}
+                                >
+                                    {this.state.lives > 0 ? (
+                                        <span>
+                                            <i className="fa fa-mail-forward" />{" "}
+                                            {l.startNextStage}
+                                        </span>
+                                    ) : (
+                                        <span>
+                                            <i className="fa fa-repeat" />{" "}
+                                            {l.startAgain}}
+                                        </span>
+                                    )}
+                                </button>
+                            ) : null}
+                        </div>
+                    </div>
+                    <div className="col-2 text-right">
+                        <button
+                            onClick={() => this.props.onReturn()}
+                            className={classnames(
+                                "btn btn-secondary m-1 text-dark"
+                            )}
+                        >
+                            <i className={classnames("fa fa-fw fa-sign-out")} />
+                        </button>
+                    </div>
+                </div>
             </div>
         );
     }
