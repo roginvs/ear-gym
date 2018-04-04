@@ -10,6 +10,7 @@
 - [ ] Icons for musicTypes
 - [ ] Update React (or add polyfill), use getDerivedStateFromProps instead of key-binding to component instance
 - [ ] Refactor gameRenders
+- [ ] Possibility to hear sound with and without fx after answer (4 buttons: "no fx", "fx", "fx as you answered", "next task")
 - [ ] Add some build timestamp (via webpack plugin or similar)
 - [x] Simplify challenge at low levels
 - [x] Gain game
