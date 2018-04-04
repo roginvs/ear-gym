@@ -40,7 +40,7 @@ export class GameController extends React.Component<
         musicSrc: undefined,
         fxOn: false
     };
-    startGame = () => {
+    selectMusic = () => {        
         const musicCache = this.state.musicCache;
         if (musicCache) {
             const musicSrc = this.props.audioCtx.createBufferSource();
@@ -59,6 +59,7 @@ export class GameController extends React.Component<
         }
     };
     startNexStage = () => {
+        this.selectMusic();
         const stage = this.state.stage;
         const level = this.state.level;
         if (stage >= MAX_STAGES) {
@@ -92,7 +93,7 @@ export class GameController extends React.Component<
                     {
                         musicCache
                     },
-                    this.startGame
+                    this.selectMusic
                 )
             )
             .catch(err => this.setState({ err }));
@@ -233,7 +234,7 @@ export class GameController extends React.Component<
                     </div> */}
 
                 <div className="row no-gutters mx-2">
-                    <div className="col-8 offset-2">
+                    <div className="col-12">
                         <div className="text-center">
                             <button
                                 onClick={() => this.setState({ fxOn: false })}
@@ -254,21 +255,25 @@ export class GameController extends React.Component<
                             >
                                 <i className="fa fa-fw fa-check-square-o" />
                                 {l.fxon}
-                            </button>
+                            </button>                  
+                        </div>
+                    </div>
 
-                            {this.state.answered ? <DivFadeinCss tagName="span">
+                    <div className="col-8 offset-2 text-center">
+                        {this.state.answered ? (
+                            <DivFadeinCss>
                                 <button
                                     onClick={() => {
                                         if (this.state.lives > 0) {
                                             this.startNexStage();
                                         } else {
+                                            this.selectMusic();
                                             this.setState(
                                                 {
                                                     answered: false,
                                                     lives: LIVES_MAX,
                                                     stage: 1
-                                                },
-                                                this.startGame
+                                                },                                                
                                             );
                                         }
                                     }}
@@ -288,8 +293,8 @@ export class GameController extends React.Component<
                                         </span>
                                     )}
                                 </button>
-                            </DivFadeinCss> : null}
-                        </div>
+                            </DivFadeinCss>
+                        ) : null}
                     </div>
                     <div className="col-2 text-right">
                         <button
