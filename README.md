@@ -5,9 +5,11 @@
 Онлайн тренировка ушей с использованием Web Audio API
 
 ## TODO
+- [ ] Fix volume for piano
 - [ ] Other games: 3 button (A, both, B): distortion, reverb?, saturator, compressor
 - [ ] Other games: delay
 - [ ] Icons for musicTypes
+- [ ] ServiceWorker for offline mode (maybe the one which is build-in into webpack)
 - [ ] Update React (or add polyfill), use getDerivedStateFromProps instead of key-binding to component instance
 - [ ] Add some build timestamp (via webpack plugin or similar)
 - [x] Possibility to hear sound with and without fx after answer
