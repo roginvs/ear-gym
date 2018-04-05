@@ -1,3 +1,6 @@
+import * as React from "react";
+const MUSIC_SOURCE_URL = "https://www.youtube.com/watch?v=qdcqNA9qb_w";
+
 const ru = {
     title: "Ear Gym",
     welcome: "Добро пожаловать в Ear Gym!",
@@ -25,7 +28,9 @@ const ru = {
     error: "Ошибка",
     gain: "Громкость",
     gaindesc: "Нужно услышать усиление/подавление громкости в дБ",
-    back: "Назад"
+    back: "Назад",
+
+    musicSourceInfo: <span>Музыка была заимствована из мюзикла <a href={MUSIC_SOURCE_URL} target="blank">"Последнее испытание"</a></span>,   
 };
 const en: typeof ru = {
     title: "Ear Gym",
@@ -54,7 +59,9 @@ const en: typeof ru = {
     error: "Error",
     gain: "Volume",
     gaindesc: "Find volume boost/reduce in dB",
-    back: "Back"
+    back: "Back",
+
+    musicSourceInfo: <span>Music was taken from <a href={MUSIC_SOURCE_URL} target="blank">"The Last Trial"</a> musical</span>,       
 };
 
 function browserLocale() {

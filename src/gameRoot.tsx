@@ -212,6 +212,7 @@ export class GameRoot extends React.Component<
                             ))}
                         </div>
                         <div className="container mt-2 text-center">
+                            <p>{l.musicSourceInfo}</p>                            
                             <p className="text-muted">
                                 <a href={GITHUB_URL}>{GITHUB_URL}</a>
                             </p>
