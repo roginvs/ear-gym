@@ -22,5 +22,6 @@ export interface Game {
     name: string;
     description: string;
     maxLevels: number;
+    abInsteadOfFxOnOff?: boolean,
     stage: (props: GameStageProps) => JSX.Element;
 }

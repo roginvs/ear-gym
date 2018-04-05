@@ -31,6 +31,9 @@ const ru = {
     back: "Назад",
 
     musicSourceInfo: <span>Музыка была заимствована из мюзикла <a href={MUSIC_SOURCE_URL} target="blank">"Последнее испытание"</a></span>,   
+
+    fxSoundA: "Образец A",
+    fxSoundB: "Образец B",
 };
 const en: typeof ru = {
     title: "Ear Gym",
@@ -62,6 +65,9 @@ const en: typeof ru = {
     back: "Back",
 
     musicSourceInfo: <span>Music was taken from <a href={MUSIC_SOURCE_URL} target="blank">"The Last Trial"</a> musical</span>,       
+
+    fxSoundA: "Sample A",
+    fxSoundB: "Sample B",
 };
 
 function browserLocale() {

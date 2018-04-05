@@ -244,9 +244,13 @@ export class GameController extends React.Component<
                                     "text-dark": this.state.fxOn
                                 })}
                             >
-                                <i className="fa fa-fw fa-square-o" />
-
+                            {this.props.game.abInsteadOfFxOnOff ? <>
+                                <i className="fa fa-fw fa-volume-up" />{" "}
+                                {l.fxSoundA}
+                                </> : <>
+                                <i className="fa fa-fw fa-square-o" />{" "}
                                 {l.fxoff}
+                                </>}
                             </button>
 
                             <button
@@ -255,8 +259,13 @@ export class GameController extends React.Component<
                                     "text-dark": !this.state.fxOn
                                 })}
                             >
+                            {this.props.game.abInsteadOfFxOnOff ? <>
+                                <i className="fa fa-fw fa-volume-up" />{" "}
+                                {l.fxSoundB}
+                                </> : <>
                                 <i className="fa fa-fw fa-check-square-o" />
                                 {l.fxon}
+                                </>}
                             </button>                  
                         </div>
                     </div>
