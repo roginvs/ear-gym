@@ -84,7 +84,7 @@ function browserLocale() {
 
     if (navigator.languages && navigator.languages.length) {
         // latest versions of Chrome and Firefox set this correctly
-        lang = navigator.languages[0];
+        lang = navigator.languages.join(' ')
         //    } else if (navigator.userLanguage) {
         //      // IE only
         //      lang = navigator.userLanguage
