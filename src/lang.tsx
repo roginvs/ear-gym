@@ -4,7 +4,7 @@ const MUSIC_SOURCE_URL = "https://www.youtube.com/watch?v=qdcqNA9qb_w";
 const ru = {
     title: "Ear Gym",
     welcome: "Добро пожаловать в Ear Gym!",
-    welcome2: "Здесь вы можете тренировать свои уши",
+    welcome2: "Это онлайн платформа где вы можете тренировать свой слух",    
     loading: "Загрузка",
     music: "Музыка",
     piano: "Фортепиано",
@@ -42,7 +42,7 @@ const ru = {
 const en: typeof ru = {
     title: "Ear Gym",
     welcome: "Welcome to Ear Gym!",
-    welcome2: "Here you can train you ears",
+    welcome2: "This is an online platform to train your ears",
     loading: "Loading",
     music: "Music",
     piano: "Piano",
