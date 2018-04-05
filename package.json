@@ -37,6 +37,7 @@
     "bootstrap": "^4.0.0",
     "classnames": "^2.2.5",
     "copy-webpack-plugin": "^4.5.1",
+    "ejs-compiled-loader": "^1.1.0",
     "font-awesome": "^4.7.0",
     "mini-css-extract-plugin": "^0.3.0",
     "react": "^16.3.1",

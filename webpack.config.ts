@@ -10,7 +10,7 @@ import MiniCssExtractPlugin from "mini-css-extract-plugin";
 
 const indexHtml = new HtmlWebpackPlugin({
     title: "Ear gym",
-    template: "src/index.ejs"
+    template: "!!ejs-compiled-loader!src/index.ejs"
 });
 
 const devServer: webpackDevServer.Configuration = {
