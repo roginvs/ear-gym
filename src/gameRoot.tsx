@@ -59,6 +59,7 @@ export class GameRoot extends React.Component<
                         <div className="container mb-2 text-center">
                             <h1>{l.welcome}</h1>
                             <p>{l.welcome2}</p>
+                            <p>{l.musicSourceInfo}</p>
                         </div>
                         <div className="container mb-4 text-center">
                             {GAMES.map(game => (
@@ -251,8 +252,7 @@ export class GameRoot extends React.Component<
                                 </div>
                             ))}
                         </div>
-                        <div className="container mt-2 text-center">
-                            <p>{l.musicSourceInfo}</p>
+                        <div className="container mt-2 text-center">                           
                             <p className="text-muted">
                                 <a href={GITHUB_URL}>{GITHUB_URL}</a>
                             </p>
