@@ -81,10 +81,12 @@ export class GameRoot extends React.Component<
                                                         .musicType
                                                 }
                                             >
-                                                <div className="card ml-auto mr-auto"
-                                                style={{
-                                                    maxWidth: "20em"
-                                                }}>
+                                                <div
+                                                    className="card ml-auto mr-auto"
+                                                    style={{
+                                                        maxWidth: "20em"
+                                                    }}
+                                                >
                                                     <div className="card-body">
                                                         <h5 className="card-title">
                                                             {musicTypeToName(
@@ -102,18 +104,18 @@ export class GameRoot extends React.Component<
                                                                 game.maxLevels +
                                                                     1
                                                             ).map(lvl => {
-                                                                const readyToStart =  this
-                                                                .state
-                                                                .readyToStart;
-                                                                if (!readyToStart) {
+                                                                const readyToStart = this
+                                                                    .state
+                                                                    .readyToStart;
+                                                                if (
+                                                                    !readyToStart
+                                                                ) {
                                                                     return null;
                                                                 }
                                                                 const maxLevel = loadHighScore(
-                                                                          readyToStart
-                                                                              .game,
-                                                                          readyToStart
-                                                                              .musicType
-                                                                      );
+                                                                    readyToStart.game,
+                                                                    readyToStart.musicType
+                                                                );
 
                                                                 return (
                                                                     <button
@@ -122,19 +124,26 @@ export class GameRoot extends React.Component<
                                                                         )}
                                                                         disabled={
                                                                             lvl >
-                                                                        (maxLevel || 1)
+                                                                            (maxLevel ||
+                                                                                1)
                                                                         }
                                                                         key={
                                                                             lvl
                                                                         }
-                                                                        onClick={() => this.setState({
-                                                                            playing: {
-                                                                                game: readyToStart.game,
-                                                                                musicType: readyToStart.musicType,
-                                                                                startLevel: lvl,
-                                                                            },
-                                                                            readyToStart: undefined,                                                                        
-                                                                        })}
+                                                                        onClick={() =>
+                                                                            this.setState(
+                                                                                {
+                                                                                    playing: {
+                                                                                        game:
+                                                                                            readyToStart.game,
+                                                                                        musicType:
+                                                                                            readyToStart.musicType,
+                                                                                        startLevel: lvl
+                                                                                    },
+                                                                                    readyToStart: undefined
+                                                                                }
+                                                                            )
+                                                                        }
                                                                     >
                                                                         {
                                                                             l.level
@@ -145,10 +154,15 @@ export class GameRoot extends React.Component<
                                                             })}
                                                         </div>
                                                         <div>
-                                                            <button className="btn btn-light"
-                                                            onClick={() => this.setState({
-                                                                readyToStart: undefined
-                                                            })}
+                                                            <button
+                                                                className="btn btn-light"
+                                                                onClick={() =>
+                                                                    this.setState(
+                                                                        {
+                                                                            readyToStart: undefined
+                                                                        }
+                                                                    )
+                                                                }
                                                             >
                                                                 <i className="fa fa-reply" />{" "}
                                                                 {l.back}
@@ -157,66 +171,88 @@ export class GameRoot extends React.Component<
                                                     </div>
                                                 </div>
                                             </DivFadeinCss>
-                                        ) : <DivFadeinCss key="types">
-                                            {GAME_MUSIC_TYPES.map(musicType => {
-                                                const maxLevel = loadHighScore(
-                                                    game,
-                                                    musicType
-                                                );
-                                                return (
-                                                    <button
-                                                        className="btn btn-light m-1"
-                                                        key={musicType}
-                                                        onClick={() => {
-                                                            this.setState({
-                                                                readyToStart: {
-                                                                    game,
-                                                                    musicType
-                                                                }
-                                                            });
-                                                        }}
-                                                    >
-                                                        <div>
-                                                            {musicTypeToName(
-                                                                musicType
-                                                            )}
-                                                        </div>
-                                                        <div>
-                                                            {range(
-                                                                1,
-                                                                game.maxLevels +
-                                                                    1
-                                                            ).map(lvl => (
-                                                                <span
-                                                                    key={
-                                                                        lvl +
-                                                                        "-" +
-                                                                        maxLevel
+                                        ) : (
+                                            <DivFadeinCss key="types">
+                                                {GAME_MUSIC_TYPES.map(
+                                                    musicType => {
+                                                        const maxLevel = loadHighScore(
+                                                            game,
+                                                            musicType
+                                                        );
+                                                        return (
+                                                            <button
+                                                                className="btn btn-light m-1"
+                                                                key={musicType}
+                                                                onClick={() => {
+                                                                    if (
+                                                                        maxLevel >
+                                                                        1
+                                                                    ) {
+                                                                        this.setState(
+                                                                            {
+                                                                                readyToStart: {
+                                                                                    game,
+                                                                                    musicType
+                                                                                }
+                                                                            }
+                                                                        );
+                                                                    } else {
+                                                                        this.setState(
+                                                                            {
+                                                                                playing: {
+                                                                                    game,
+                                                                                    musicType,
+                                                                                    startLevel: 1
+                                                                                }
+                                                                            }
+                                                                        );
                                                                     }
-                                                                >
-                                                                    <i
-                                                                        className={classnames(
-                                                                            "fa",
-                                                                            lvl <
-                                                                            maxLevel
-                                                                                ? "fa-star"
-                                                                                : "fa-star-o"
-                                                                        )}
-                                                                    />
-                                                                </span>
-                                                            ))}
-                                                        </div>
-                                                    </button>
-                                                );
-                                            })
-                                        }
-                                        </DivFadeinCss>}
+                                                                }}
+                                                            >
+                                                                <div>
+                                                                    {musicTypeToName(
+                                                                        musicType
+                                                                    )}
+                                                                </div>
+                                                                <div>
+                                                                    {range(
+                                                                        1,
+                                                                        game.maxLevels +
+                                                                            1
+                                                                    ).map(
+                                                                        lvl => (
+                                                                            <span
+                                                                                key={
+                                                                                    lvl +
+                                                                                    "-" +
+                                                                                    maxLevel
+                                                                                }
+                                                                            >
+                                                                                <i
+                                                                                    className={classnames(
+                                                                                        "fa",
+                                                                                        lvl <
+                                                                                        maxLevel
+                                                                                            ? "fa-star"
+                                                                                            : "fa-star-o"
+                                                                                    )}
+                                                                                />
+                                                                            </span>
+                                                                        )
+                                                                    )}
+                                                                </div>
+                                                            </button>
+                                                        );
+                                                    }
+                                                )}
+                                            </DivFadeinCss>
+                                        )}
                                     </div>
                                 </div>
                             ))}
                         </div>
                         <div className="container mt-2 text-center">
-                            <p>{l.musicSourceInfo}</p>                            
+                            <p>{l.musicSourceInfo}</p>
                             <p className="text-muted">
                                 <a href={GITHUB_URL}>{GITHUB_URL}</a>
                             </p>
@@ -242,7 +278,7 @@ export class GameRoot extends React.Component<
                                 );
                             }
                         }}
-                        onReturn={() => {                            
+                        onReturn={() => {
                             this.setState({
                                 playing: undefined,
                                 readyToStart: undefined
