@@ -8,12 +8,15 @@ import { range, GameSoundPlayer } from "./utils";
 import classnames from "classnames";
 import l from "./lang";
 import { GAIN_GAME } from "./gainGame";
-import { DISTORTION_GAME } from "./distortionGame";
+import { SATURATION_GAME } from "./saturationGame";
 //import { GAIN_GAME } from "./gainGame";
 // import {Collapse} from "reactstrap";
 
 const LS_HIGH_SCORES_PREFIX = "highscores";
 function loadHighScore(game: Game, musicType: MusicType) {
+    //if (location.hostname === 'localhost') {
+    //    return 100
+    // }
     const key = `${LS_HIGH_SCORES_PREFIX}_${game.id}_${musicType}`;
     const raw = localStorage.getItem(key);
     return raw ? parseInt(raw) : 0;
@@ -37,7 +40,7 @@ interface GameRootState {
     };
 }
 
-const GAMES: Game[] = [EQ_GAME_PLUS, EQ_GAME_MINUS, GAIN_GAME, DISTORTION_GAME];
+const GAMES: Game[] = [EQ_GAME_PLUS, EQ_GAME_MINUS, GAIN_GAME, SATURATION_GAME];
 
 export class GameRoot extends React.Component<
     {

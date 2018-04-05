@@ -224,7 +224,7 @@ interface GameState {
     answeredFreq?: number;
 }
 
-const EQ_STAGES_Q_GAIN = [
+const LEVELS_Q_GAIN = [
     [3, 12],
     [2.5, 12],
     [2.5, 9],
@@ -266,7 +266,7 @@ class EqStage extends React.Component<GameStageProps & {
         this.fx.type = "peaking";
         this.fx.frequency.setValueAtTime(this.state.correctFreq, 0);
 
-        const [q, gain] = EQ_STAGES_Q_GAIN[this.props.level - 1];
+        const [q, gain] = LEVELS_Q_GAIN[this.props.level - 1];
 
         this.fx.Q.setValueAtTime(q / 2, 0);
         this.fx.gain.setValueAtTime(
@@ -282,7 +282,7 @@ class EqStage extends React.Component<GameStageProps & {
     }
 
     render() {
-        const [q, gain] = EQ_STAGES_Q_GAIN[this.props.level - 1];
+        const [q, gain] = LEVELS_Q_GAIN[this.props.level - 1];
         return (
             <div>
                 <EqSelector
@@ -299,7 +299,7 @@ class EqStage extends React.Component<GameStageProps & {
                             answeredFreq: freq
                         });
 
-                        const [q, gain] = EQ_STAGES_Q_GAIN[
+                        const [q, gain] = LEVELS_Q_GAIN[
                             this.props.level - 1
                         ];
                         const freqMax = correctFreq * 2 ** (q / 2);
@@ -342,6 +342,6 @@ export const EQ_GAME_MINUS: Game = {
     id: "eqminus",
     name: l.eqminus,
     description: l.eqminusdesc,
-    maxLevels: 8,
+    maxLevels: LEVELS_Q_GAIN.length,
     stage: props => <EqStage {...props} type="minus"/>
 };
