@@ -1,10 +1,11 @@
 export type GameSound = 'correct' | 'wrong' | 'gameover' | 'levelup';
 export type GameSoundPlayer = (sound: GameSound) => void
 
-export function urlToAudioBuffer(audioCtx: AudioContext, url: string) {
-    return fetch(url)
-    .then(x => x.arrayBuffer())
-    .then(data => audioCtx.decodeAudioData(data))
+export async function urlToAudioBuffer(audioCtx: AudioContext, url: string) {    
+    const f = await fetch(url);
+    const arrBuff = await f.arrayBuffer();
+    const data = await new Promise<AudioBuffer>((resolv, reject) => audioCtx.decodeAudioData(arrBuff, resolv, reject));
+    return data
 };
 
 
