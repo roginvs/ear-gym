@@ -10,9 +10,19 @@ import {GameRoot} from './gameRoot';
 
 const root = document.getElementById("root");
 
+declare global {
+    interface Window { 
+        AudioContext?: typeof AudioContext;
+        webkitAudioContext?: typeof AudioContext;
+     }
+}
 (async () => {
-    console.info(`Creating context`);
-    const audioCtx = new AudioContext();
+    console.info(`Creating context`);    
+    const AudioCtx = window.AudioContext || window.webkitAudioContext || AudioContext;
+    if (!AudioCtx) {
+        throw new Error(`AudioContext is not supported on this browser`)
+    }
+    const audioCtx = new AudioCtx();
 
     console.info(`Loading data`);
     const [correct, wrong, gameover, levelup] = await Promise.all([
@@ -43,10 +53,11 @@ const root = document.getElementById("root");
         root
     );
 })().catch(e => {
+    console.info('catch');
     ReactDOM.render(
         <div className="container">
             <div className="py-5">
-                Ошибка {e} ({e.message})
+                Ошибка {e.message}
             </div>
         </div>,
         root
