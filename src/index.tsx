@@ -1,3 +1,5 @@
+// import "./monkeyLogs";
+
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { Loader, DivFadeinCss } from "./common";
@@ -52,12 +54,12 @@ declare global {
             playSound={playSound}/>,
         root
     );
-})().catch(e => {
+})().catch((e: Error) => {
     console.error(`Catched ${e} ${e.message}`);
     ReactDOM.render(
         <div className="container">
             <div className="py-5">
-                Ошибка {e.message}
+                Ошибка {e.name} {e.message} {e.stack}
             </div>
         </div>,
         root
