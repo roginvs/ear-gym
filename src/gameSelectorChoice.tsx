@@ -4,7 +4,7 @@ import classnames from 'classnames';
 //import l from "./lang";
 
 interface GameSelectorChoiceProps {
-    names: string[];
+    names: (string | JSX.Element)[];
     correctId?: number;
     onAnswer: (nameId: number) => void;
 }

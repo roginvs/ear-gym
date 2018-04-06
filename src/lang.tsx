@@ -36,8 +36,10 @@ const ru = {
     fxSoundB: "Образец B",
     saturation: "Насыщение (saturation)",
     saturationDesc: "Нужно услышать какой образец более насыщен",
-    saturationChoiceA: "Образец A более насыщен",
-    saturationChoiceB: "Образец B более насыщен",
+    saturationChoiceA1: "Образец A",    
+    saturationChoiceB1: "Образец B",
+    saturationChoiceA2: "более насыщен",
+    saturationChoiceB2: "более насыщен",
 };
 const en: typeof ru = {
     title: "Ear Gym",
@@ -75,8 +77,10 @@ const en: typeof ru = {
 
     saturation: "Saturation",
     saturationDesc: "Find what sound is more saturated",
-    saturationChoiceA: "Sound A is more saturated",
-    saturationChoiceB: "Sound B is more saturated",
+    saturationChoiceA1: "Sample A",
+    saturationChoiceB1: "Sample B",
+    saturationChoiceA2: "is more saturated",
+    saturationChoiceB2: "is more saturated",
 };
 
 function browserLocale() {

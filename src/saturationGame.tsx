@@ -75,7 +75,6 @@ class DistortionStage extends React.Component<GameStageProps, GameState> {
             this.fxCompressorPre.attack.setValueAtTime(0, 0);
             this.fxCompressorPre.release.setValueAtTime(0.25, 0);
 
-            
             this.props.srcAudio.connect(this.fxCompressorPre);
             this.fxCompressorPre.connect(this.fx);
             this.fx.connect(this.fxCompressorAfter);
@@ -83,7 +82,7 @@ class DistortionStage extends React.Component<GameStageProps, GameState> {
 
             this.debugIntervalTimer = window.setInterval(() => {
                 // console.info(`Comp reduction pre=${this.fxCompressorPre.reduction} after=${this.fxCompressorAfter.reduction}`)
-            }, 100)
+            }, 100);
         } else {
             this.props.srcAudio.connect(this.fx);
             this.fx.connect(this.props.audioCtx.destination);
@@ -147,7 +146,16 @@ class DistortionStage extends React.Component<GameStageProps, GameState> {
         return (
             <div>
                 <GameSelectorChoice
-                    names={[l.saturationChoiceA, l.saturationChoiceB]}
+                    names={[
+                        <div>
+                            <div>{l.saturationChoiceA1}</div>
+                            <div>{l.saturationChoiceA2}</div>
+                        </div>,
+                        <div>
+                            <div>{l.saturationChoiceB1}</div>
+                            <div>{l.saturationChoiceB2}</div>
+                        </div>
+                    ]}
                     correctId={
                         this.state.answeredId !== undefined
                             ? this.state.correctId
