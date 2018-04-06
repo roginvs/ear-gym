@@ -27,17 +27,19 @@ declare global {
     const audioCtx = new AudioCtx();
 
     console.info(`Loading data`);
-    const [correct, wrong, gameover, levelup] = await Promise.all([
+    const [correct, wrong, gameover, levelup, silenceIosWorkaround] = await Promise.all([
         gameSound(audioCtx, "correct"),
         gameSound(audioCtx, "wrong"),
         gameSound(audioCtx, "gameover"),
-        gameSound(audioCtx, "levelup")
+        gameSound(audioCtx, "levelup"),
+        gameSound(audioCtx, "silenceIosWorkaround")
     ]);
     const gameSounds = {
         correct,
         wrong,
         gameover,
-        levelup
+        levelup,
+        silenceIosWorkaround
     };
     const playSound: GameSoundPlayer = type => {
         const source = audioCtx.createBufferSource();

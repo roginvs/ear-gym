@@ -131,7 +131,8 @@ export class GameRoot extends React.Component<
                                                                         key={
                                                                             lvl
                                                                         }
-                                                                        onClick={() =>
+                                                                        onClick={() => {
+                                                                            this.props.playSound('silenceIosWorkaround');
                                                                             this.setState(
                                                                                 {
                                                                                     playing: {
@@ -144,7 +145,7 @@ export class GameRoot extends React.Component<
                                                                                     readyToStart: undefined
                                                                                 }
                                                                             )
-                                                                        }
+                                                                        }}
                                                                     >
                                                                         {
                                                                             l.level
@@ -198,6 +199,7 @@ export class GameRoot extends React.Component<
                                                                             }
                                                                         );
                                                                     } else {
+                                                                        this.props.playSound('silenceIosWorkaround');
                                                                         this.setState(
                                                                             {
                                                                                 playing: {
