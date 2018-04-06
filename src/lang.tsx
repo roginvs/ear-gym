@@ -76,7 +76,7 @@ const en: typeof ru = {
     saturation: "Saturation",
     saturationDesc: "Find what sound is more saturated",
     saturationChoiceA: "Sound A is more saturated",
-    saturationChoiceB: "Sound A is more saturated",
+    saturationChoiceB: "Sound B is more saturated",
 };
 
 function browserLocale() {
