@@ -6,7 +6,8 @@
 
 ## TODO
 - [ ] Fix volume for piano
-- [ ] Other games: 3 button (A, both, B): distortion, reverb?, saturator, compressor
+- [ ] Fix volume for every sample, remove pre-compressor in saturator
+- [ ] Other games: 3 button (A, both, B): distortion, reverb?, compressor
 - [ ] Other games: delay
 - [ ] Icons for musicTypes
 - [ ] ServiceWorker for offline mode (maybe the one which is build-in into webpack)
