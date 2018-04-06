@@ -53,7 +53,7 @@ declare global {
         root
     );
 })().catch(e => {
-    console.info('catch');
+    console.error(`Catched ${e} ${e.message}`);
     ReactDOM.render(
         <div className="container">
             <div className="py-5">
