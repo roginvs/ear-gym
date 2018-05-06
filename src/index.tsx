@@ -9,6 +9,7 @@ import "font-awesome/css/font-awesome.css";
 
 import {gameSound, GameSoundPlayer} from './utils';
 import {GameRoot} from './gameRoot';
+import { GameRootNoWebaudio } from "./gameRootNoWebaudio";
 
 const root = document.getElementById("root");
 
@@ -22,7 +23,9 @@ declare global {
     console.info(`Creating context`);    
     const AudioCtx = window.AudioContext || window.webkitAudioContext || AudioContext;
     if (!AudioCtx) {
-        throw new Error(`AudioContext is not supported on this browser`)
+        console.warn(`AudioContext is not supported on this browser`)        
+        ReactDOM.render(<GameRootNoWebaudio/>, root);
+        return;        
     }
     const audioCtx = new AudioCtx();
 
