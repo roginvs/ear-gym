@@ -63,17 +63,17 @@ class DistortionStage extends React.Component<GameStageProps, GameState> {
         this.updateFx();
         if (USE_COMPRESSOR) {
             // Why that values? Why -20 db? It is really very big. Ratio is huge too. But it works
-            this.fxCompressorAfter.threshold.setValueAtTime(-20, 0);
-            this.fxCompressorAfter.knee.setValueAtTime(1, 0);
-            this.fxCompressorAfter.ratio.setValueAtTime(20, 0);
+            this.fxCompressorAfter.threshold.setValueAtTime(-5, 0);
+            this.fxCompressorAfter.knee.setValueAtTime(3, 0);
+            this.fxCompressorAfter.ratio.setValueAtTime(10, 0);
             this.fxCompressorAfter.attack.setValueAtTime(0, 0);
-            this.fxCompressorAfter.release.setValueAtTime(0.25, 0);
+            this.fxCompressorAfter.release.setValueAtTime(1, 0);
 
-            this.fxCompressorPre.threshold.setValueAtTime(-20, 0);
-            this.fxCompressorPre.knee.setValueAtTime(1, 0);
+            this.fxCompressorPre.threshold.setValueAtTime(-5, 0);
+            this.fxCompressorPre.knee.setValueAtTime(0, 0);
             this.fxCompressorPre.ratio.setValueAtTime(20, 0);
             this.fxCompressorPre.attack.setValueAtTime(0, 0);
-            this.fxCompressorPre.release.setValueAtTime(0.25, 0);
+            this.fxCompressorPre.release.setValueAtTime(1, 0);
 
             this.props.srcAudio.connect(this.fxCompressorPre);
             this.fxCompressorPre.connect(this.fx);
@@ -108,10 +108,11 @@ class DistortionStage extends React.Component<GameStageProps, GameState> {
         const saturationBoost = useAorB ? this.state.saturatedBoost : 1;
         const positiveCurve = range(1, ITEMS + 1).map(
             i =>
-                saturation(
-                    saturationParams.saturationRadio,
+                //saturation(
+               //     saturationParams.saturationRadio,
                     saturation(saturationParams.saturationRadio, i / ITEMS)
-                ) * saturationBoost
+                //) 
+                * saturationBoost
         );
 
         const curve: number[] = [
