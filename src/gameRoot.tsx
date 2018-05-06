@@ -2,13 +2,11 @@ import * as React from "react";
 import { Game } from "./game";
 import { GameController } from "./gameController";
 import { MusicType, GAME_MUSIC_TYPES, musicTypeToName } from "./music";
-import { EQ_GAME_PLUS, EQ_GAME_MINUS } from "./eqGame";
 import { DivFadeinCss } from "./common";
 import { range, GameSoundPlayer } from "./utils";
 import classnames from "classnames";
 import l from "./lang";
-import { GAIN_GAME } from "./gainGame";
-import { SATURATION_GAME } from "./saturationGame";
+import { GAMES } from "./games";
 //import { GAIN_GAME } from "./gainGame";
 // import {Collapse} from "reactstrap";
 
@@ -39,8 +37,6 @@ interface GameRootState {
         musicType: MusicType;
     };
 }
-
-const GAMES: Game[] = [EQ_GAME_PLUS, EQ_GAME_MINUS, GAIN_GAME, SATURATION_GAME];
 
 export class GameRoot extends React.Component<
     {
