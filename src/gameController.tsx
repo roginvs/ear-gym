@@ -129,6 +129,8 @@ export class GameController extends React.Component<
                     <div className="col-4 text-left">
                         <div>
                             <b>{this.state.level}</b>
+                            {this.props.game.levelInfo ? <span> (
+                            {this.props.game.levelInfo(this.state.level)})</span> : null}
                         </div>
                         <div>{l.level}</div>
                     </div>

@@ -335,6 +335,10 @@ export const EQ_GAME_PLUS: Game = {
     name: l.eqplus,
     description: l.eqplusdesc,
     maxLevels: 8,
+    levelInfo: levelNumber => {
+        const [q, gain] = LEVELS_Q_GAIN[levelNumber - 1];
+      return  <span>Q={q/2}, +{gain}db</span>
+    },
     stage: props => <EqStage {...props} type="plus"/>
 };
 
@@ -343,5 +347,9 @@ export const EQ_GAME_MINUS: Game = {
     name: l.eqminus,
     description: l.eqminusdesc,
     maxLevels: LEVELS_Q_GAIN.length,    
+    levelInfo: levelNumber => {
+        const [q, gain] = LEVELS_Q_GAIN[levelNumber - 1];
+      return  <span>Q={q/2}, -{gain}db</span>
+    },
     stage: props => <EqStage {...props} type="minus"/>
 };
