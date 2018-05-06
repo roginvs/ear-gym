@@ -342,6 +342,6 @@ export const EQ_GAME_MINUS: Game = {
     id: "eqminus",
     name: l.eqminus,
     description: l.eqminusdesc,
-    maxLevels: LEVELS_Q_GAIN.length,
+    maxLevels: LEVELS_Q_GAIN.length,    
     stage: props => <EqStage {...props} type="minus"/>
 };

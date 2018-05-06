@@ -128,5 +128,6 @@ export const GAIN_GAME: Game = {
     name: l.gain,
     description: l.gaindesc,
     maxLevels: LEVELS_DISTANCE_CHOICES.length,
+    eachStageFxOff: true,
     stage: props => <GainStage {...props} />
 };

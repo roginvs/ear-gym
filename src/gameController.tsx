@@ -74,13 +74,15 @@ export class GameController extends React.Component<
                     level: level + 1,
                     stage: 1,
                     lives: LIVES_MAX,
-                    answered: false
+                    answered: false,
+                    fxOn: this.props.game.eachStageFxOff ? false : this.state.fxOn,
                 });
             }
         } else {
             this.setState({
                 stage: stage + 1,
-                answered: false
+                answered: false,
+                fxOn: this.props.game.eachStageFxOff ? false : this.state.fxOn,
             });
         }
     };
