@@ -1,5 +1,6 @@
 import * as React from "react";
-const MUSIC_SOURCE_URL = "https://www.youtube.com/watch?v=qdcqNA9qb_w";
+const MUSIC_SOURCE_URL_PI = "https://www.youtube.com/watch?v=qdcqNA9qb_w";
+const MUSIC_SOURCE_URL_EPIDEMIA = "http://www.epidemia.ru";
 
 const ru = {
     title: "Ear Gym",
@@ -30,7 +31,10 @@ const ru = {
     gaindesc: "Нужно услышать усиление/подавление громкости в дБ",
     back: "Назад",
 
-    musicSourceInfo: <span>Музыка была заимствована из мюзикла <a href={MUSIC_SOURCE_URL} target="blank">"Последнее испытание"</a></span>,   
+    musicSourceInfo: <div><div>Музыка была заимствована из:</div>
+         <div>Мюзикл <a href={MUSIC_SOURCE_URL_PI} target="blank">"Последнее испытание"</a></div>
+         <div>Группа <a href={MUSIC_SOURCE_URL_EPIDEMIA} target="blank">"Эпидемия"</a></div></div>
+         ,   
 
     fxSoundA: "Образец A",
     fxSoundB: "Образец B",
@@ -69,8 +73,11 @@ const en: typeof ru = {
     gain: "Volume",
     gaindesc: "Find volume boost/reduce in dB",
     back: "Back",
-
-    musicSourceInfo: <span>Music was taken from <a href={MUSIC_SOURCE_URL} target="blank">"The Last Trial"</a> musical</span>,       
+    
+    musicSourceInfo: <div><div>Music was taken from:</div>
+         <div><a href={MUSIC_SOURCE_URL_PI} target="blank">"The Last Trial"</a> musical</div>
+         <div><a href={MUSIC_SOURCE_URL_EPIDEMIA} target="blank">"Epidemia"</a> band</div></div>
+         ,   
 
     fxSoundA: "Sample A",
     fxSoundB: "Sample B",
