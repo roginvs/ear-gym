@@ -7,7 +7,7 @@ import classNames from "classnames";
 import l from "./lang";
 import classnames from "classnames";
 
-const STAGES_COUNT = 20;
+const STAGES_COUNT = 16;
 const LIVES_MAX = 3;
 
 interface GameControllerState {
