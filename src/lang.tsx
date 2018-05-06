@@ -31,10 +31,9 @@ const ru = {
     gaindesc: "Нужно услышать усиление/подавление громкости в дБ",
     back: "Назад",
 
-    musicSourceInfo: <div><div>Музыка была заимствована из:</div>
-         <div>Мюзикл <a href={MUSIC_SOURCE_URL_PI} target="blank">"Последнее испытание"</a></div>
-         <div>Группа <a href={MUSIC_SOURCE_URL_EPIDEMIA} target="blank">"Эпидемия"</a></div></div>
-         ,   
+    musicSourceInfo: <span>Музыка была заимствована из:<br/>
+         Мюзикл <a href={MUSIC_SOURCE_URL_PI} target="blank">"Последнее испытание"</a><br/>
+         Группа <a href={MUSIC_SOURCE_URL_EPIDEMIA} target="blank">"Эпидемия"</a><br/></span>,
 
     fxSoundA: "Образец A",
     fxSoundB: "Образец B",
@@ -74,10 +73,9 @@ const en: typeof ru = {
     gaindesc: "Find volume boost/reduce in dB",
     back: "Back",
     
-    musicSourceInfo: <div><div>Music was taken from:</div>
-         <div><a href={MUSIC_SOURCE_URL_PI} target="blank">"The Last Trial"</a> musical</div>
-         <div><a href={MUSIC_SOURCE_URL_EPIDEMIA} target="blank">"Epidemia"</a> band</div></div>
-         ,   
+    musicSourceInfo: <span>Music was taken from:<br/>
+         <a href={MUSIC_SOURCE_URL_PI} target="blank">"The Last Trial"</a> musical<br/>
+         <a href={MUSIC_SOURCE_URL_EPIDEMIA} target="blank">"Epidemia"</a> band</span>,    
 
     fxSoundA: "Sample A",
     fxSoundB: "Sample B",
