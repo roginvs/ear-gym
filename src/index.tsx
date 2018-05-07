@@ -21,7 +21,7 @@ declare global {
 }
 (async () => {
     console.info(`Creating context`);    
-    const AudioCtx = window.AudioContext || window.webkitAudioContext || AudioContext;
+    const AudioCtx = window.AudioContext || window.webkitAudioContext;
     if (!AudioCtx) {
         console.warn(`AudioContext is not supported on this browser`)        
         ReactDOM.render(<GameRootNoWebaudio/>, root);
