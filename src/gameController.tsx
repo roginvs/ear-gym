@@ -14,7 +14,6 @@ interface GameControllerState {
     level: number;
     stage: number;
     lives: number;
-    musicCache?: AudioBuffer[];
     musicSrc?: AudioNode;
     err?: Error;
     answered?: boolean;
@@ -32,32 +31,48 @@ export class GameController extends React.Component<
     },
     GameControllerState
 > {
+    urlToaudioBufferCache: {
+        [id: string]: AudioBuffer | undefined;
+    } = {};
     state: GameControllerState = {
         level: this.props.startingLevel,
         stage: 1,
         lives: LIVES_MAX,
-        musicCache: undefined,
         musicSrc: undefined,
         fxOn: false
     };
-    selectMusic = () => {
-        const musicCache = this.state.musicCache;
-        if (musicCache) {
-            const i = Math.floor(Math.random() * musicCache.length);
-            const music = musicCache[i];
 
+    selectMusic = () => {
+        const setMusicSrcFromAudioBuffer = (music: AudioBuffer) => {
             const musicSrc = this.props.audioCtx.createBufferSource();
             musicSrc.buffer = music;
             musicSrc.loop = true;
             musicSrc.start(0, 0);
-
             this.setState({
                 musicSrc
             });
+        };
+        const musicUrlList = musicList(this.props.musicType).map(
+            name => `media/${this.props.musicType}/${name}`
+        );
+
+        const i = Math.floor(Math.random() * musicUrlList.length);
+        const musicUrl = musicUrlList[i];
+        const alreadyCachedMusicSrc = this.urlToaudioBufferCache[musicUrl];
+        if (alreadyCachedMusicSrc) {
+            setMusicSrcFromAudioBuffer(alreadyCachedMusicSrc);
         } else {
             this.setState({
                 musicSrc: undefined
             });
+            urlToAudioBuffer(this.props.audioCtx, musicUrl).then(
+                downloadedAudioBuffer => {
+                    this.urlToaudioBufferCache[
+                        musicUrl
+                    ] = downloadedAudioBuffer;
+                    setMusicSrcFromAudioBuffer(downloadedAudioBuffer);
+                }
+            );
         }
     };
     startNexStage = () => {
@@ -89,24 +104,9 @@ export class GameController extends React.Component<
         }
     };
     componentDidMount() {
-        Promise.all(
-            musicList(this.props.musicType)
-                .map(name => `media/${this.props.musicType}/${name}`)
-                .map(url => urlToAudioBuffer(this.props.audioCtx, url))
-        )
-            .then(musicCache =>
-                this.setState(
-                    {
-                        musicCache
-                    },
-                    this.selectMusic
-                )
-            )
-            .catch(err => this.setState({ err }));
         document.getElementsByTagName("body")[0].style.backgroundColor =
             "lightblue";
-
-        // setInterval(() => this.forceUpdate(), 3000);
+        this.selectMusic();
     }
     componentWillUnmount() {
         document.getElementsByTagName("body")[0].style.backgroundColor = "";
@@ -195,9 +195,13 @@ export class GameController extends React.Component<
                         })}{" "}
                     </div>
                 ) : (
-                    <div key="loader" className="text-center" style={{
-                        color: "lightgrey"
-                    }}>
+                    <div
+                        key="loader"
+                        className="text-center"
+                        style={{
+                            color: "lightgrey"
+                        }}
+                    >
                         <Loader />
                     </div>
                 )}
