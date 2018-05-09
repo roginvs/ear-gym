@@ -40,17 +40,17 @@ export class GameController extends React.Component<
         musicSrc: undefined,
         fxOn: false
     };
-    selectMusic = () => {        
+    selectMusic = () => {
         const musicCache = this.state.musicCache;
-        if (musicCache) {            
+        if (musicCache) {
             const i = Math.floor(Math.random() * musicCache.length);
             const music = musicCache[i];
-            
+
             const musicSrc = this.props.audioCtx.createBufferSource();
             musicSrc.buffer = music;
             musicSrc.loop = true;
             musicSrc.start(0, 0);
-                        
+
             this.setState({
                 musicSrc
             });
@@ -75,14 +75,16 @@ export class GameController extends React.Component<
                     stage: 1,
                     lives: LIVES_MAX,
                     answered: false,
-                    fxOn: this.props.game.eachStageFxOff ? false : this.state.fxOn,
+                    fxOn: this.props.game.eachStageFxOff
+                        ? false
+                        : this.state.fxOn
                 });
             }
         } else {
             this.setState({
                 stage: stage + 1,
                 answered: false,
-                fxOn: this.props.game.eachStageFxOff ? false : this.state.fxOn,
+                fxOn: this.props.game.eachStageFxOff ? false : this.state.fxOn
             });
         }
     };
@@ -113,10 +115,8 @@ export class GameController extends React.Component<
         if (this.state.err) {
             return <ErrorInfo info={this.state.err.message} />;
         }
+
         const musicSrc = this.state.musicSrc;
-        if (!musicSrc) {
-            return <Loader />;
-        }
 
         return (
             <DivFadeinCss key="gamecontroller" className="bg-dark py-2">
@@ -129,8 +129,15 @@ export class GameController extends React.Component<
                     <div className="col-4 text-left">
                         <div>
                             <b>{this.state.level}</b>
-                            {this.props.game.levelInfo ? <span> (
-                            {this.props.game.levelInfo(this.state.level)})</span> : null}
+                            {this.props.game.levelInfo ? (
+                                <span>
+                                    {" "}
+                                    (
+                                    {this.props.game.levelInfo(
+                                        this.state.level
+                                    )})
+                                </span>
+                            ) : null}
                         </div>
                         <div>{l.level}</div>
                     </div>
@@ -159,85 +166,41 @@ export class GameController extends React.Component<
                     </div>
                 </div>
 
-                <div key={this.state.level + "-" + this.state.stage}>
-                    {this.props.game.stage({
-                        srcAudio: musicSrc,
-                        audioCtx: this.props.audioCtx,
-                        fxOn: this.state.fxOn,
-                        level: this.state.level,
-                        musicType: this.props.musicType,
-                        onAnswer: correctness => {
-                            if (correctness === "right") {
-                                this.props.playSound("correct");
-                            } else {
-                                const lives = this.state.lives - 1;
-                                if (lives > 0) {
-                                    this.props.playSound("wrong");
-                                } else {
-                                    this.props.playSound("gameover");
-                                }
-                                this.setState({
-                                    lives
-                                });
-                            }
-                            this.setState({
-                                answered: true
-                            });
-                        }
-                    })}
-                </div>
-
-                {/* this.props.game.stage({
-                            level: this.state.level,
+                {musicSrc ? (
+                    <div key={this.state.level + "-" + this.state.stage}>
+                        {this.props.game.stage({
+                            srcAudio: musicSrc,
                             audioCtx: this.props.audioCtx,
-                            music,
+                            fxOn: this.state.fxOn,
+                            level: this.state.level,
                             musicType: this.props.musicType,
-                            onAnswer: correct => {
-                                if (correct) {
+                            onAnswer: correctness => {
+                                if (correctness === "right") {
                                     this.props.playSound("correct");
                                 } else {
-                                    this.props.playSound("wrong");
+                                    const lives = this.state.lives - 1;
+                                    if (lives > 0) {
+                                        this.props.playSound("wrong");
+                                    } else {
+                                        this.props.playSound("gameover");
+                                    }
                                     this.setState({
-                                        lives: this.state.lives - 1
+                                        lives
                                     });
                                 }
-
-                                setTimeout(() => {
-                                    if (this.state.lives === 0) {
-                                        this.props.playSound("gameover");
-                                        this.setState({
-                                            gameOver: true
-                                        });
-                                    }
-
-                                    const stage = this.state.stage;
-                                    const level = this.state.level;
-                                    if (stage >= MAX_STAGES) {
-                                        this.props.onNewLevel(level + 1);
-                                        this.props.playSound('levelup');
-                                        if (
-                                            level >= this.props.game.maxLevels
-                                        ) {
-                                            this.props.onReturn();
-                                        } else {
-                                            this.setState({
-                                                level: level + 1,
-                                                stage: 1,
-                                                lives: LIVES_MAX
-                                            });
-                                        }
-                                    } else {
-                                        this.setState({
-                                            stage: stage + 1
-                                        });
-                                    }
-                                }, 3000);
-                            },
-                            onExit: () => {
-                                this.props.onReturn();
+                                this.setState({
+                                    answered: true
+                                });
                             }
-                        })}
-                    </div> */}
+                        })}{" "}
+                    </div>
+                ) : (
+                    <div key="loader" className="text-center" style={{
+                        color: "lightgrey"
+                    }}>
+                        <Loader />
+                    </div>
+                )}
 
                 <div className="row no-gutters mx-2">
                     <div className="col-12">
@@ -248,13 +211,17 @@ export class GameController extends React.Component<
                                     "text-dark": this.state.fxOn
                                 })}
                             >
-                            {this.props.game.abInsteadOfFxOnOff ? <>
-                                <i className="fa fa-fw fa-volume-up" />{" "}
-                                {l.fxSoundA}
-                                </> : <>
-                                <i className="fa fa-fw fa-square-o" />{" "}
-                                {l.fxoff}
-                                </>}
+                                {this.props.game.abInsteadOfFxOnOff ? (
+                                    <>
+                                        <i className="fa fa-fw fa-volume-up" />{" "}
+                                        {l.fxSoundA}
+                                    </>
+                                ) : (
+                                    <>
+                                        <i className="fa fa-fw fa-square-o" />{" "}
+                                        {l.fxoff}
+                                    </>
+                                )}
                             </button>
 
                             <button
@@ -263,14 +230,18 @@ export class GameController extends React.Component<
                                     "text-dark": !this.state.fxOn
                                 })}
                             >
-                            {this.props.game.abInsteadOfFxOnOff ? <>
-                                <i className="fa fa-fw fa-volume-up" />{" "}
-                                {l.fxSoundB}
-                                </> : <>
-                                <i className="fa fa-fw fa-check-square-o" />
-                                {l.fxon}
-                                </>}
-                            </button>                  
+                                {this.props.game.abInsteadOfFxOnOff ? (
+                                    <>
+                                        <i className="fa fa-fw fa-volume-up" />{" "}
+                                        {l.fxSoundB}
+                                    </>
+                                ) : (
+                                    <>
+                                        <i className="fa fa-fw fa-check-square-o" />
+                                        {l.fxon}
+                                    </>
+                                )}
+                            </button>
                         </div>
                     </div>
 
@@ -283,13 +254,11 @@ export class GameController extends React.Component<
                                             this.startNexStage();
                                         } else {
                                             this.selectMusic();
-                                            this.setState(
-                                                {
-                                                    answered: false,
-                                                    lives: LIVES_MAX,
-                                                    stage: 1
-                                                },                                                
-                                            );
+                                            this.setState({
+                                                answered: false,
+                                                lives: LIVES_MAX,
+                                                stage: 1
+                                            });
                                         }
                                     }}
                                     className={classNames(
