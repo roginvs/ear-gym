@@ -1,6 +1,5 @@
 import * as React from "react";
 
-export const MAX_STAGES = 20;
 import classnames from "classnames";
 import { GameSoundPlayer } from "./utils";
 import l from "./lang";

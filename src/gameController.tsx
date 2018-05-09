@@ -2,12 +2,12 @@ import React from "react";
 import { range, urlToAudioBuffer, GameSoundPlayer } from "./utils";
 import { Loader, ErrorInfo, DivFadeinCss } from "./common";
 import { MusicType, musicList } from "./music";
-import { Game, MAX_STAGES } from "./game";
+import { Game } from "./game";
 import classNames from "classnames";
 import l from "./lang";
 import classnames from "classnames";
 
-const STAGES_COUNT = 16;
+const STAGES_COUNT = 20;
 const LIVES_MAX = 3;
 
 interface GameControllerState {
@@ -64,7 +64,7 @@ export class GameController extends React.Component<
         this.selectMusic();
         const stage = this.state.stage;
         const level = this.state.level;
-        if (stage >= MAX_STAGES) {
+        if (stage >= STAGES_COUNT) {
             this.props.onNewLevel(level + 1);
             this.props.playSound("levelup");
             if (level >= this.props.game.maxLevels) {
