@@ -195,14 +195,16 @@ export class GameController extends React.Component<
                         })}{" "}
                     </div>
                 ) : (
-                    <div
-                        key="loader"
-                        className="text-center"
-                        style={{
-                            color: "lightgrey"
-                        }}
-                    >
-                        <Loader />
+                    <div key="loader" className="text-center py-2">
+                        <div
+                            style={{
+                                color: "lightgrey",
+                                height: "8em",
+                                lineHeight: "8em"
+                            }}
+                        >
+                            <Loader />
+                        </div>
                     </div>
                 )}
 
