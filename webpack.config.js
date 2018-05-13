@@ -1,24 +1,21 @@
-import path from "path";
-import webpack from "webpack";
-import webpackDevServer from "webpack-dev-server";
 
-import HtmlWebpackPlugin from "html-webpack-plugin";
-
-import CopyWebpackPlugin from "copy-webpack-plugin";
-
-import MiniCssExtractPlugin from "mini-css-extract-plugin";
+const webpack =require("webpack");
+const webpackDevServer =require("webpack-dev-server");
+const HtmlWebpackPlugin =require( "html-webpack-plugin");
+const CopyWebpackPlugin  =require("copy-webpack-plugin");
+const MiniCssExtractPlugin  =require("mini-css-extract-plugin");
 
 const indexHtml = new HtmlWebpackPlugin({
     title: "Ear gym",
-    template: "!!ejs-compiled-loader!src/index.ejs"
+    template: "!!ejs-compiled-loader!./src/index.ejs"
 });
 
-const devServer: webpackDevServer.Configuration = {
+const devServer /*: webpackDevServer.Configuration */ = {
     contentBase: "./dist",
     port: 4004
 };
 
-const config: webpack.Configuration = {
+const config /*: webpack.Configuration */ = {
     entry: {
         index: "./src/index.tsx"
     },
@@ -80,4 +77,4 @@ const config: webpack.Configuration = {
     devServer
 };
 
-export default config;
+module.exports = config;
