@@ -167,7 +167,7 @@ export class GameController extends React.Component<
                 </div>
 
                 {musicSrc ? (
-                    <div key={this.state.level + "-" + this.state.stage}>
+                    <DivFadeinCss key={this.state.level + "-" + this.state.stage}>
                         {this.props.game.stage({
                             srcAudio: musicSrc,
                             audioCtx: this.props.audioCtx,
@@ -193,9 +193,9 @@ export class GameController extends React.Component<
                                 });
                             }
                         })}{" "}
-                    </div>
+                    </DivFadeinCss>
                 ) : (
-                    <div key="loader" className="text-center py-2">
+                    <DivFadeinCss key="loader" className="text-center py-2">
                         <div
                             style={{
                                 color: "lightgrey",
@@ -205,7 +205,7 @@ export class GameController extends React.Component<
                         >
                             <Loader />
                         </div>
-                    </div>
+                    </DivFadeinCss>
                 )}
 
                 <div className="row no-gutters mx-2">
