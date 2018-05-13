@@ -128,6 +128,7 @@ export class GameRoot extends React.Component<
                                                                             lvl
                                                                         }
                                                                         onClick={() => {
+                                                                            this.props.audioCtx.resume();
                                                                             this.props.playSound('silenceIosWorkaround');
                                                                             this.setState(
                                                                                 {
@@ -195,6 +196,7 @@ export class GameRoot extends React.Component<
                                                                             }
                                                                         );
                                                                     } else {
+                                                                        this.props.audioCtx.resume();
                                                                         this.props.playSound('silenceIosWorkaround');
                                                                         this.setState(
                                                                             {
