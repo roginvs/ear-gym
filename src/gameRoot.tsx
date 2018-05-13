@@ -7,6 +7,7 @@ import { range, GameSoundPlayer } from "./utils";
 import classnames from "classnames";
 import l from "./lang";
 import { GAMES } from "./games";
+import { Version } from "./version";
 //import { GAIN_GAME } from "./gainGame";
 // import {Collapse} from "reactstrap";
 
@@ -129,7 +130,9 @@ export class GameRoot extends React.Component<
                                                                         }
                                                                         onClick={() => {
                                                                             this.props.audioCtx.resume();
-                                                                            this.props.playSound('silenceIosWorkaround');
+                                                                            this.props.playSound(
+                                                                                "silenceIosWorkaround"
+                                                                            );
                                                                             this.setState(
                                                                                 {
                                                                                     playing: {
@@ -141,7 +144,7 @@ export class GameRoot extends React.Component<
                                                                                     },
                                                                                     readyToStart: undefined
                                                                                 }
-                                                                            )
+                                                                            );
                                                                         }}
                                                                     >
                                                                         {
@@ -197,7 +200,9 @@ export class GameRoot extends React.Component<
                                                                         );
                                                                     } else {
                                                                         this.props.audioCtx.resume();
-                                                                        this.props.playSound('silenceIosWorkaround');
+                                                                        this.props.playSound(
+                                                                            "silenceIosWorkaround"
+                                                                        );
                                                                         this.setState(
                                                                             {
                                                                                 playing: {
@@ -252,9 +257,14 @@ export class GameRoot extends React.Component<
                                 </div>
                             ))}
                         </div>
-                        <div className="container mt-2 text-center">                           
+                        <div className="container mt-2 text-center">
                             <p className="text-muted">
                                 <a href={GITHUB_URL}>{GITHUB_URL}</a>
+                            </p>
+                            <p className="text-muted">
+                                <small>
+                                    <Version />
+                                </small>
                             </p>
                         </div>
                     </DivFadeinCss>

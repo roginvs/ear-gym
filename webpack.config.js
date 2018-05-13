@@ -1,9 +1,9 @@
-
-const webpack =require("webpack");
-const webpackDevServer =require("webpack-dev-server");
-const HtmlWebpackPlugin =require( "html-webpack-plugin");
-const CopyWebpackPlugin  =require("copy-webpack-plugin");
-const MiniCssExtractPlugin  =require("mini-css-extract-plugin");
+const webpack = require("webpack");
+const webpackDevServer = require("webpack-dev-server");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const CopyWebpackPlugin = require("copy-webpack-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const WebpackVersionHashPlugin = require("webpack-version-hash-plugin");
 
 const indexHtml = new HtmlWebpackPlugin({
     title: "Ear gym",
@@ -30,7 +30,7 @@ const config /*: webpack.Configuration */ = {
         indexHtml,
         new CopyWebpackPlugin([
             {
-                from: "assets",                
+                from: "assets"
             }
         ]),
         new MiniCssExtractPlugin({
@@ -38,6 +38,10 @@ const config /*: webpack.Configuration */ = {
             // both options are optional
             filename: "[name].css",
             chunkFilename: "[id].css"
+        }),
+        new WebpackVersionHashPlugin({
+            filename: 'version.json',
+            include_date: true
         })
     ],
 
