@@ -7,7 +7,7 @@ const WebpackVersionHashPlugin = require("webpack-version-hash-plugin");
 
 const indexHtml = new HtmlWebpackPlugin({
     title: "Ear gym",
-    template: "!!ejs-compiled-loader!./src/index.ejs"
+    template: "!!ejs-compiled-loader!./src/ejs/index.ejs"
 });
 
 const devServer /*: webpackDevServer.Configuration */ = {

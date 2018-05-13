@@ -5,11 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title><%= htmlWebpackPlugin.options.title %></title>  
     
-    <%- include src/analytics %>
+    <%- include /src/ejs/analytics %>
     
   </head>
   <body>
-      <div id="monkeyLogs"/>
-      <div id="root"/>  
+      <div id="monkeyLogs"></div>
+      <div id="root"></div>
+
+      <div class="text-center">
+        <%- include /src/ejs/facebook %>
+      </div>
   </body>
 </html>
