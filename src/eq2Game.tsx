@@ -8,20 +8,22 @@ import classnames from "classnames";
 
 import "./eq2game.css";
 
-function lvlInfo(level: number) {
-    const lvlInfoData: {
-        bandsTotal: number;
-        bandsAltered: number;
-        dbStep: number;
-    }[] = [
-        {
-            bandsTotal: 4, // 20
-            bandsAltered: 2,
-            dbStep: 3
-        }
-    ];
-    return lvlInfoData[level - 1];
-}
+const lvlInfoData: {
+    bandsTotal: number;
+    bandsAltered: number;
+    dbStep: number;
+}[] = [
+    {
+        bandsTotal: 4,
+        bandsAltered: 2,
+        dbStep: 6
+    },
+    {
+        bandsTotal: 16,
+        bandsAltered: 6,
+        dbStep: 4
+    }
+];
 
 interface EQ2GameState {
     correctDbs: number[];
@@ -30,21 +32,38 @@ interface EQ2GameState {
 }
 
 const MAX_DB = 12;
-const CORRECT_THRESHOLD = 4;
+// const CORRECT_THRESHOLD = 4;
 
 class EQ2Game extends React.Component<GameStageProps, EQ2GameState> {
     minFreq = 150;
     maxFreq = 12800;
-    lvlInfo = lvlInfo(this.props.level);
-    qStep = 2 **
-    (Math.log2(this.maxFreq / this.minFreq) / this.lvlInfo.bandsTotal);
-    bandsFreqs = range(0, lvlInfo(this.props.level).bandsTotal).map(
+    lvlInfo = lvlInfoData[this.props.level - 1];
+    correctThreshold = this.lvlInfo.dbStep;
+    qStep = this.lvlInfo.bandsTotal !== 1
+        ? 2 **
+          (Math.log2(this.maxFreq / this.minFreq) /
+              (this.lvlInfo.bandsTotal - 1))
+        : 1;
+    bandsFreqs = range(0, this.lvlInfo.bandsTotal).map(
         id => this.minFreq * this.qStep ** id
     );
 
     state = (() => {
+        const correctDbs = this.bandsFreqs.map((x, id) => 0);
+        // Not a disaster if band is modified several times
+        for (const i of range(0, this.lvlInfo.bandsAltered)) {
+            const rndIdx = Math.floor(Math.random() * this.bandsFreqs.length);
+            const rndBoost =
+                (Math.random() > 0.5 ? 1 : -1) *
+                (Math.floor(
+                    Math.random() * Math.floor(MAX_DB / this.lvlInfo.dbStep)
+                ) +
+                    1) *
+                this.lvlInfo.dbStep;
+            correctDbs[rndIdx] = rndBoost;
+        }
         const state: EQ2GameState = {
-            correctDbs: this.bandsFreqs.map((x, id) => (id % 2 ? 0 : 6)),
+            correctDbs,
             userDbs: this.bandsFreqs.map(x => 0),
             userAnswered: false
         };
@@ -71,7 +90,7 @@ class EQ2Game extends React.Component<GameStageProps, EQ2GameState> {
         this.fxes.map((fx, id) => {
             fx.type = "peaking";
             fx.frequency.setValueAtTime(this.bandsFreqs[id], 0);
-            fx.Q.setValueAtTime(this.qStep, 0); // Maybe divide by two?
+            fx.Q.setValueAtTime(this.qStep * 2, 0); // Maybe multiple by two?
             //console.info(`id=${id} freq=${freq} qStep=${qStep}`);
         });
     }
@@ -80,7 +99,7 @@ class EQ2Game extends React.Component<GameStageProps, EQ2GameState> {
         const eqGains = this.props.fxOn
             ? this.state.userDbs
             : this.state.correctDbs;
-        console.info(eqGains);
+        // console.info(eqGains);
         this.fxes.map((fx, id) => fx.gain.setValueAtTime(eqGains[id], 0));
     }
 
@@ -94,7 +113,7 @@ class EQ2Game extends React.Component<GameStageProps, EQ2GameState> {
         const correntFreqsAmount = this.state.userDbs.filter(
             (userFreq, id) =>
                 Math.abs(this.state.correctDbs[id] - userFreq) <=
-                CORRECT_THRESHOLD
+                this.correctThreshold
         ).length;
         this.props.onAnswer(
             correntFreqsAmount === this.state.correctDbs.length
@@ -121,8 +140,6 @@ class EQ2Game extends React.Component<GameStageProps, EQ2GameState> {
                             height: "14em"
                         }}
                     >
-                        
-
                         {this.bandsFreqs.map((band, id) => (
                             <input
                                 key={"user-" + id}
@@ -133,7 +150,7 @@ class EQ2Game extends React.Component<GameStageProps, EQ2GameState> {
                                 max={MAX_DB}
                                 onChange={e => {
                                     if (this.state.userAnswered) {
-                                        return
+                                        return;
                                     }
                                     this.state.userDbs[id] = parseInt(
                                         e.target.value
@@ -167,7 +184,7 @@ class EQ2Game extends React.Component<GameStageProps, EQ2GameState> {
                                           Math.abs(
                                               this.state.correctDbs[id] -
                                                   this.state.userDbs[id]
-                                          ) <= CORRECT_THRESHOLD
+                                          ) <= this.correctThreshold
                                               ? "slider-answer-correct"
                                               : "slider-answer-wrong"
                                       )}
@@ -225,7 +242,7 @@ export const EQ2_GAME: Game = {
     id: "eq2",
     name: l.eq2game,
     description: l.eq2gamedesc,
-    maxLevels: 8,
+    maxLevels: lvlInfoData.length,
     fxonofftype: "originalmodified",
     eachStageFxOff: true,
     // levelInfo?: (levelNumber: number) => JSX.Element,
