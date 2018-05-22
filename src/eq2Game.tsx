@@ -13,7 +13,7 @@ function lvlInfo(level: number) {
         dbStep: number;
     }[] = [
         {
-            bandsTotal: 10,
+            bandsTotal: 20,
             bandsAltered: 2,
             dbStep: 3
         }
@@ -24,20 +24,28 @@ function lvlInfo(level: number) {
 interface EQ2GameState {
     correctDbs: number[];
     userDbs: number[];
+    userAnswered: boolean;
 }
 
 const MAX_DB = 12;
 
 class EQ2Game extends React.Component<GameStageProps, EQ2GameState> {
-    bands = range(0, lvlInfo(this.props.level).bandsTotal);
+    minFreq = 100;
+    maxFreq = 12800;    
+    lvlInfo = lvlInfo(this.props.level);
+    qStep = 2 ** (Math.log2(this.maxFreq / this.minFreq) / this.lvlInfo.bandsTotal);
+    bandsFreqs = range(0, lvlInfo(this.props.level).bandsTotal).map(id => this.minFreq * this.qStep ** id);
+
     state = (() => {
-        return {
-            correctDbs: this.bands.map((x, id) => (id % 2 ? 0 : 6)),
-            userDbs: this.bands.map(x => 0)
-        };
+        const state: EQ2GameState = {
+            correctDbs: this.bandsFreqs.map((x, id) => (id % 2 ? 0 : 6)),
+            userDbs: this.bandsFreqs.map(x => 0),
+            userAnswered: false
+        }
+        return state;
     })();
 
-    fxes = this.bands.map(x => this.props.audioCtx.createBiquadFilter());
+    fxes = this.bandsFreqs.map(x => this.props.audioCtx.createBiquadFilter());
     componentDidUpdate() {
         this.updateFx();
     }
@@ -54,16 +62,12 @@ class EQ2Game extends React.Component<GameStageProps, EQ2GameState> {
                     : this.fxes[id].connect(this.props.audioCtx.destination)
         );
 
-        const minFreq = 100;
-        const maxFreq = 12800;
-        const max2Power = Math.log2(maxFreq / minFreq);
-        const qStep = 2 ** (max2Power / this.fxes.length);
+        
         this.fxes.map((fx, id) => {
-            fx.type = "peaking";
-            const freq = minFreq * qStep ** id;
-            fx.frequency.setValueAtTime(freq, 0);
-            fx.Q.setValueAtTime(qStep, 0); // Maybe divide by two?
-            console.info(`id=${id} freq=${freq} qStep=${qStep}`);
+            fx.type = "peaking";            
+            fx.frequency.setValueAtTime(this.bandsFreqs[id], 0);
+            fx.Q.setValueAtTime(this.qStep, 0); // Maybe divide by two?
+            //console.info(`id=${id} freq=${freq} qStep=${qStep}`);
         });
     }
 
@@ -91,11 +95,11 @@ class EQ2Game extends React.Component<GameStageProps, EQ2GameState> {
                         className="bg-secondary rounded mx-2"
                         style={{
                             position: "relative",
-                            height: "9em"
+                            height: "14em"
                         }}
                     >
 
-                    {this.bands.map((band, id) => (
+                    {this.state.userAnswered ? this.bandsFreqs.map((band, id) => (
                             <input
                                 key={"correct-"+id}
                                 value={this.state.correctDbs[id]}
@@ -108,17 +112,17 @@ class EQ2Game extends React.Component<GameStageProps, EQ2GameState> {
                                     //top: "50%",
                                     left: `${100 *
                                         (id + 1) /
-                                        (this.bands.length + 1)}%`,
+                                        (this.bandsFreqs.length + 1)}%`,
                                     transformOrigin: "left top",
-                                    width: "8em",                                
-                                    top: "8.5em",
+                                    width: "10em",                                
+                                    top: "10.5em",
                                     transform:
                                         "rotate(270deg) translate(0%, -50%)"
                                 }}
                             />
-                        ))}
+                        )) : null}
 
-                        {this.bands.map((band, id) => (
+                        {this.bandsFreqs.map((band, id) => (
                             <input
                                 key={"user-"+id}
                                 className="slider"
@@ -138,15 +142,30 @@ class EQ2Game extends React.Component<GameStageProps, EQ2GameState> {
                                     //top: "50%",
                                     left: `${100 *
                                         (id + 1) /
-                                        (this.bands.length + 1)}%`,
+                                        (this.bandsFreqs.length + 1)}%`,
                                     transformOrigin: "left top",
-                                    width: "8em",                                    
-                                    top: "8.5em",
+                                    width: "10em",                                    
+                                    top: "10.5em",
                                     transform:
                                         "rotate(270deg) translate(0%, -50%)"
                                 }}
                             />
                         ))}
+
+                        {this.bandsFreqs.map((band, id) => <span
+                          key={"bandinfo-"+id}
+                          style={{
+                            position: "absolute",
+                            left: `${100 *
+                                (id + 1) /
+                                (this.bandsFreqs.length + 1)}%`,                                                       
+                            top: id % 2 ? "10.5em" : "11.5em",
+                            transform: "translate(-50%, 0%)",                            
+                            color: "lightgrey"
+                        }}
+                        ><span style={{
+                            fontSize: "0.7em",
+                        }}>{Math.round(band)}{l.hz}</span></span>)}
                     </div>
                 </div>
             </div>
