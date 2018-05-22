@@ -6,7 +6,7 @@ import { Game, GameStageProps } from "./game";
 
 import classnames from "classnames";
 
-import "./eq2game.css";
+import "./graphicEqGame.css";
 
 const lvlInfoData: {
     bandsTotal: number;
@@ -25,16 +25,15 @@ const lvlInfoData: {
     }
 ];
 
-interface EQ2GameState {
+interface GraphicEqGameState {
     correctDbs: number[];
     userDbs: number[];
     userAnswered: boolean;
 }
 
-const MAX_DB = 12;
-// const CORRECT_THRESHOLD = 4;
+const MAX_DB = 16;
 
-class EQ2Game extends React.Component<GameStageProps, EQ2GameState> {
+class GraphicEqGame extends React.Component<GameStageProps, GraphicEqGameState> {
     freqFullRange = this.props.musicType === "music" ||
     this.props.musicType === "drums"
         ? true
@@ -69,7 +68,7 @@ class EQ2Game extends React.Component<GameStageProps, EQ2GameState> {
                 this.lvlInfo.dbStep;
             correctDbs[rndIdx] = rndBoost;
         }
-        const state: EQ2GameState = {
+        const state: GraphicEqGameState = {
             correctDbs,
             userDbs: this.bandsFreqs.map(x => 0),
             userAnswered: false
@@ -98,7 +97,7 @@ class EQ2Game extends React.Component<GameStageProps, EQ2GameState> {
         this.fxes.map((fx, id) => {
             fx.type = "peaking";
             fx.frequency.setValueAtTime(this.bandsFreqs[id], 0);
-            fx.Q.setValueAtTime(this.qStep, 0); // Maybe multiple/divide by two?
+            fx.Q.setValueAtTime(this.qStep * 2, 0); // Maybe multiple/divide by two?
             //console.info(`id=${id} freq=${freq} qStep=${qStep}`);
         });
     }
@@ -246,13 +245,13 @@ class EQ2Game extends React.Component<GameStageProps, EQ2GameState> {
     }
 }
 
-export const EQ2_GAME: Game = {
-    id: "eq2",
-    name: l.eq2game,
-    description: l.eq2gamedesc,
+export const GRAPHIC_EQ_GAME: Game = {
+    id: "graphiceq",
+    name: l.graphicEqGameName,
+    description: l.graphicEqGameDescription,
     maxLevels: lvlInfoData.length,
     fxonofftype: "originalmodified",
     eachStageFxOff: true,
     // levelInfo?: (levelNumber: number) => JSX.Element,
-    stage: props => <EQ2Game {...props} />
+    stage: props => <GraphicEqGame {...props} />
 };
