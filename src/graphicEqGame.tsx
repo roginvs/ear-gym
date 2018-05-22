@@ -45,13 +45,13 @@ class GraphicEqGame extends React.Component<GameStageProps, GraphicEqGameState> 
     maxFreq = this.freqFullRange ? 12800 : 5000;
     lvlInfo = lvlInfoData[this.props.level - 1];
     correctThreshold = this.lvlInfo.dbStep;
-    qStep = this.lvlInfo.bandsTotal !== 1
+    frequencyMultiplyStep = this.lvlInfo.bandsTotal !== 1
         ? 2 **
           (Math.log2(this.maxFreq / this.minFreq) /
               (this.lvlInfo.bandsTotal - 1))
         : 1;
     bandsFreqs = range(0, this.lvlInfo.bandsTotal).map(
-        id => this.minFreq * this.qStep ** id
+        id => this.minFreq * this.frequencyMultiplyStep ** id
     );
 
     state = (() => {
@@ -97,7 +97,7 @@ class GraphicEqGame extends React.Component<GameStageProps, GraphicEqGameState> 
         this.fxes.map((fx, id) => {
             fx.type = "peaking";
             fx.frequency.setValueAtTime(this.bandsFreqs[id], 0);
-            fx.Q.setValueAtTime(this.qStep / 2, 0); // Maybe multiple/divide by two?
+            fx.Q.setValueAtTime(Math.log2(this.frequencyMultiplyStep) / 2, 0);
             //console.info(`id=${id} freq=${freq} qStep=${qStep}`);
         });
     }
