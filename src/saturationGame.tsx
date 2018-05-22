@@ -191,7 +191,7 @@ export const SATURATION_GAME: Game = {
     name: l.saturation,
     description: l.saturationDesc,
     maxLevels: LEVELS.length,
-    abInsteadOfFxOnOff: true,
+    fxonofftype: "ab",    
     stage: props => <DistortionStage {...props} />
 };
 

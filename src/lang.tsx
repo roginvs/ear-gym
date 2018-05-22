@@ -47,6 +47,11 @@ const ru = {
 
     eq2game: "Эквалайзер 2",
     eq2gamedesc: "Нужно настроить графический эквалайзер",
+
+    fxSoundOriginal: "Оригинальный",
+    fxSoundModified: "Изменённый",
+
+    soundTheSame: "Так звучат одинаково",
 };
 const en: typeof ru = {
     title: "Ear Gym",
@@ -94,6 +99,10 @@ const en: typeof ru = {
 
     eq2game: "Equalizer 2",
     eq2gamedesc: "Need to set up graphic equalizer",
+    fxSoundOriginal: "Original",
+    fxSoundModified: "Modified",
+
+    soundTheSame: "That sounds the same",
 };
 
 function browserLocale() {

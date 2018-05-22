@@ -36,3 +36,25 @@
 }
 
 /*# sourceMappingURL=index.css.map*/
+
+.slider-answer{
+    opacity: 1;   
+}
+
+.slider-answer-correct::-webkit-slider-thumb {
+    background: green;
+    width: 10px;
+}
+.slider-answer-correct::-moz-range-thumb {
+    background: green;
+    width: 10px;
+}
+
+.slider-answer-wrong::-webkit-slider-thumb {    
+    background: red;
+    width: 10px;
+}
+.slider-answer-wrong::-moz-range-thumb {    
+    background: red;
+    width: 10px;
+}

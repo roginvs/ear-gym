@@ -15,13 +15,14 @@ export interface GameStageProps {
     fxOn: boolean;
 }
 
+type FxOnOffType = "onoff" | "ab"| "originalmodified";
 
 export interface Game {
     id: string;
     name: string;
     description: string;
     maxLevels: number;
-    abInsteadOfFxOnOff?: boolean,
+    fxonofftype: FxOnOffType,
     eachStageFxOff?: boolean,
     levelInfo?: (levelNumber: number) => JSX.Element,
     stage: (props: GameStageProps) => JSX.Element;
