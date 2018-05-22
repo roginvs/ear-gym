@@ -13,7 +13,7 @@ function lvlInfo(level: number) {
         dbStep: number;
     }[] = [
         {
-            bandsTotal: 20,
+            bandsTotal: 4, // 20
             bandsAltered: 2,
             dbStep: 3
         }
