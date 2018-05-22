@@ -97,7 +97,7 @@ class GraphicEqGame extends React.Component<GameStageProps, GraphicEqGameState> 
         this.fxes.map((fx, id) => {
             fx.type = "peaking";
             fx.frequency.setValueAtTime(this.bandsFreqs[id], 0);
-            fx.Q.setValueAtTime(this.qStep * 2, 0); // Maybe multiple/divide by two?
+            fx.Q.setValueAtTime(this.qStep / 2, 0); // Maybe multiple/divide by two?
             //console.info(`id=${id} freq=${freq} qStep=${qStep}`);
         });
     }
@@ -108,6 +108,7 @@ class GraphicEqGame extends React.Component<GameStageProps, GraphicEqGameState> 
             : this.state.correctDbs;
         console.info(eqGains);
         this.fxes.map((fx, id) => fx.gain.setValueAtTime(eqGains[id], 0));
+        console.info(this.fxes);
     }
 
     componentWillUnmount() {
