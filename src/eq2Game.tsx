@@ -4,6 +4,8 @@ import { assertNever, range } from "./utils";
 
 import { Game, GameStageProps } from "./game";
 
+import "./eq2game.css";
+
 function lvlInfo(level: number) {
     const lvlInfoData: {
         bandsTotal: number;
@@ -92,9 +94,34 @@ class EQ2Game extends React.Component<GameStageProps, EQ2GameState> {
                             height: "9em"
                         }}
                     >
+
+                    {this.bands.map((band, id) => (
+                            <input
+                                key={"correct-"+id}
+                                value={this.state.correctDbs[id]}
+                                type="range"
+                                min={-MAX_DB}
+                                max={MAX_DB}
+                                readOnly
+                                style={{
+                                    position: "absolute",
+                                    //top: "50%",
+                                    left: `${100 *
+                                        (id + 1) /
+                                        (this.bands.length + 1)}%`,
+                                    transformOrigin: "left top",
+                                    width: "8em",                                
+                                    top: "8.5em",
+                                    transform:
+                                        "rotate(270deg) translate(0%, -50%)"
+                                }}
+                            />
+                        ))}
+
                         {this.bands.map((band, id) => (
                             <input
-                                key={id}
+                                key={"user-"+id}
+                                className="slider"
                                 value={this.state.userDbs[id]}
                                 type="range"
                                 min={-MAX_DB}
@@ -109,12 +136,14 @@ class EQ2Game extends React.Component<GameStageProps, EQ2GameState> {
                                 style={{
                                     position: "absolute",
                                     //top: "50%",
-                                    left: `${100 * (id+1) / (this.bands.length + 1)}%`,
+                                    left: `${100 *
+                                        (id + 1) /
+                                        (this.bands.length + 1)}%`,
                                     transformOrigin: "left top",
-                                    width: "8em",
-                                    height: "1em",
+                                    width: "8em",                                    
                                     top: "8.5em",
-                                    transform: "rotate(270deg) translate(0%, -50%)",
+                                    transform:
+                                        "rotate(270deg) translate(0%, -50%)"
                                 }}
                             />
                         ))}
