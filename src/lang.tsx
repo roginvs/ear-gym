@@ -44,6 +44,9 @@ const ru = {
     saturationChoiceB1: "Образец B",
     saturationChoiceA2: "более насыщен",
     saturationChoiceB2: "более насыщен",
+
+    eq2game: "Эквалайзер 2",
+    eq2gamedesc: "Нужно настроить графический эквалайзер",
 };
 const en: typeof ru = {
     title: "Ear Gym",
@@ -88,6 +91,9 @@ const en: typeof ru = {
     saturationChoiceB1: "Sample B",
     saturationChoiceA2: "is more saturated",
     saturationChoiceB2: "is more saturated",
+
+    eq2game: "Equalizer 2",
+    eq2gamedesc: "Need to set up graphic equalizer",
 };
 
 function browserLocale() {
