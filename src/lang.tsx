@@ -45,9 +45,8 @@ const ru = {
     saturationChoiceA2: "более насыщен",
     saturationChoiceB2: "более насыщен",
 
-    eq2game: "Эквалайзер 2",
+    eq2game: "Графический эквалайзер",
     eq2gamedesc: "Нужно настроить графический эквалайзер",
-
     fxSoundOriginal: "Оригинальный",
     fxSoundModified: "Изменённый",
 
@@ -97,7 +96,7 @@ const en: typeof ru = {
     saturationChoiceA2: "is more saturated",
     saturationChoiceB2: "is more saturated",
 
-    eq2game: "Equalizer 2",
+    eq2game: "Graphic equalizer",
     eq2gamedesc: "Need to set up graphic equalizer",
     fxSoundOriginal: "Original",
     fxSoundModified: "Modified",

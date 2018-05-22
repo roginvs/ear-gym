@@ -94,7 +94,7 @@ class EQ2Game extends React.Component<GameStageProps, EQ2GameState> {
                     : this.fxes[id].connect(this.props.audioCtx.destination)
         );
 
-        console.info(`qtep=${this.qStep}`, this.bandsFreqs);
+        // console.info(`qtep=${this.qStep}`, this.bandsFreqs);
         this.fxes.map((fx, id) => {
             fx.type = "peaking";
             fx.frequency.setValueAtTime(this.bandsFreqs[id], 0);
