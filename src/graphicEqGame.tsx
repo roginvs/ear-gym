@@ -107,8 +107,7 @@ class GraphicEqGame extends React.Component<GameStageProps, GraphicEqGameState> 
             ? this.state.userDbs
             : this.state.correctDbs;
         console.info(eqGains);
-        this.fxes.map((fx, id) => fx.gain.setValueAtTime(eqGains[id], 0));
-        console.info(this.fxes);
+        this.fxes.map((fx, id) => fx.gain.setValueAtTime(eqGains[id], 0));        
     }
 
     componentWillUnmount() {
