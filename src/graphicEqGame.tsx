@@ -165,6 +165,14 @@ class GraphicEqGame extends React.Component<GameStageProps, GraphicEqGameState> 
                                     this.forceUpdate();
                                     this.updateFx();
                                 }}
+                                onDoubleClick={() => {
+                                    if (this.state.userAnswered) {
+                                        return;
+                                    }
+                                    this.state.userDbs[id] = 0;
+                                    this.forceUpdate();
+                                    this.updateFx();
+                                }}
                                 style={{
                                     position: "absolute",
                                     //top: "50%",
