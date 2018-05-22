@@ -35,8 +35,15 @@ const MAX_DB = 12;
 // const CORRECT_THRESHOLD = 4;
 
 class EQ2Game extends React.Component<GameStageProps, EQ2GameState> {
-    minFreq = 150;
-    maxFreq = 12800;
+    freqFullRange = this.props.musicType === "music" ||
+    this.props.musicType === "drums"
+        ? true
+        : this.props.musicType === "piano" ||
+          this.props.musicType === "electricguitar"
+            ? false
+            : assertNever(this.props.musicType);
+    minFreq = this.freqFullRange ? 150 : 200;
+    maxFreq = this.freqFullRange ? 12800 : 5000;
     lvlInfo = lvlInfoData[this.props.level - 1];
     correctThreshold = this.lvlInfo.dbStep;
     qStep = this.lvlInfo.bandsTotal !== 1
@@ -87,10 +94,11 @@ class EQ2Game extends React.Component<GameStageProps, EQ2GameState> {
                     : this.fxes[id].connect(this.props.audioCtx.destination)
         );
 
+        console.info(`qtep=${this.qStep}`, this.bandsFreqs);
         this.fxes.map((fx, id) => {
             fx.type = "peaking";
             fx.frequency.setValueAtTime(this.bandsFreqs[id], 0);
-            fx.Q.setValueAtTime(this.qStep * 2, 0); // Maybe multiple by two?
+            fx.Q.setValueAtTime(this.qStep, 0); // Maybe multiple/divide by two?
             //console.info(`id=${id} freq=${freq} qStep=${qStep}`);
         });
     }
@@ -99,7 +107,7 @@ class EQ2Game extends React.Component<GameStageProps, EQ2GameState> {
         const eqGains = this.props.fxOn
             ? this.state.userDbs
             : this.state.correctDbs;
-        // console.info(eqGains);
+        console.info(eqGains);
         this.fxes.map((fx, id) => fx.gain.setValueAtTime(eqGains[id], 0));
     }
 
