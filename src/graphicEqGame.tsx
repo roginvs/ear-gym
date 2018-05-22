@@ -97,7 +97,7 @@ class GraphicEqGame extends React.Component<GameStageProps, GraphicEqGameState> 
         this.fxes.map((fx, id) => {
             fx.type = "peaking";
             fx.frequency.setValueAtTime(this.bandsFreqs[id], 0);
-            fx.Q.setValueAtTime(Math.log2(this.frequencyMultiplyStep) / 2, 0);
+            fx.Q.setValueAtTime(2 * Math.log2(this.frequencyMultiplyStep), 0);
             //console.info(`id=${id} freq=${freq} qStep=${qStep}`);
         });
     }
