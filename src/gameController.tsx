@@ -1,5 +1,5 @@
 import React from "react";
-import { range, urlToAudioBuffer, GameSoundPlayer } from "./utils";
+import { range, urlToAudioBuffer, GameSoundPlayer, assertNever } from "./utils";
 import { Loader, ErrorInfo, DivFadeinCss } from "./common";
 import { MusicType, musicList } from "./music";
 import { Game } from "./game";
@@ -167,7 +167,9 @@ export class GameController extends React.Component<
                 </div>
 
                 {musicSrc ? (
-                    <DivFadeinCss key={this.state.level + "-" + this.state.stage}>
+                    <DivFadeinCss
+                        key={this.state.level + "-" + this.state.stage}
+                    >
                         {this.props.game.stage({
                             srcAudio: musicSrc,
                             audioCtx: this.props.audioCtx,
@@ -217,16 +219,24 @@ export class GameController extends React.Component<
                                     "text-dark": this.state.fxOn
                                 })}
                             >
-                                {this.props.game.abInsteadOfFxOnOff ? (
-                                    <>
-                                        <i className="fa fa-fw fa-volume-up" />{" "}
-                                        {l.fxSoundA}
-                                    </>
-                                ) : (
+                                {this.props.game.fxonofftype === "onoff" ? (
                                     <>
                                         <i className="fa fa-fw fa-square-o" />{" "}
                                         {l.fxoff}
                                     </>
+                                ) : this.props.game.fxonofftype === "ab" ? (
+                                    <>
+                                        <i className="fa fa-fw fa-volume-up" />{" "}
+                                        {l.fxSoundA}
+                                    </>
+                                ) : this.props.game.fxonofftype ===
+                                "originalmodified" ? (
+                                    <>
+                                        <i className="fa fa-fw fa-square-o" />{" "}
+                                        {l.fxSoundOriginal}
+                                    </>
+                                ) : (
+                                    assertNever(this.props.game.fxonofftype)
                                 )}
                             </button>
 
@@ -236,16 +246,24 @@ export class GameController extends React.Component<
                                     "text-dark": !this.state.fxOn
                                 })}
                             >
-                                {this.props.game.abInsteadOfFxOnOff ? (
-                                    <>
-                                        <i className="fa fa-fw fa-volume-up" />{" "}
-                                        {l.fxSoundB}
-                                    </>
-                                ) : (
+                                {this.props.game.fxonofftype === "onoff" ? (
                                     <>
                                         <i className="fa fa-fw fa-check-square-o" />
                                         {l.fxon}
                                     </>
+                                ) : this.props.game.fxonofftype === "ab" ? (
+                                    <>
+                                        <i className="fa fa-fw fa-volume-up" />{" "}
+                                        {l.fxSoundB}
+                                    </>
+                                ) : this.props.game.fxonofftype ===
+                                "originalmodified" ? (
+                                    <>
+                                        <i className="fa fa-fw fa-check-square-o" />
+                                        {l.fxSoundModified}
+                                    </>
+                                ) : (
+                                    assertNever(this.props.game.fxonofftype)
                                 )}
                             </button>
                         </div>

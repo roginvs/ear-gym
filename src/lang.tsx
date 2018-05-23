@@ -44,6 +44,13 @@ const ru = {
     saturationChoiceB1: "Образец B",
     saturationChoiceA2: "более насыщен",
     saturationChoiceB2: "более насыщен",
+
+    graphicEqGameName: "Графический эквалайзер",
+    graphicEqGameDescription: "Нужно настроить графический эквалайзер",
+    fxSoundOriginal: "Оригинальный",
+    fxSoundModified: "Изменённый",
+
+    soundTheSame: "Так звучат одинаково",
 };
 const en: typeof ru = {
     title: "Ear Gym",
@@ -88,6 +95,13 @@ const en: typeof ru = {
     saturationChoiceB1: "Sample B",
     saturationChoiceA2: "is more saturated",
     saturationChoiceB2: "is more saturated",
+
+    graphicEqGameName: "Graphic equalizer",
+    graphicEqGameDescription: "Need to set up graphic equalizer",
+    fxSoundOriginal: "Original",
+    fxSoundModified: "Modified",
+
+    soundTheSame: "That sounds the same",
 };
 
 function browserLocale() {

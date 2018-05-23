@@ -1,0 +1,60 @@
+
+.slider {
+    -webkit-appearance: none;  /* Override default CSS styles */
+    appearance: none;    
+    background: #a5a4a4; /* Grey background */
+    outline: none; /* Remove outline */
+    opacity: 0.8; /* Set transparency (for mouse-over effects on hover) */
+    -webkit-transition: .2s; /* 0.2 seconds transition on hover */
+    transition: opacity .2s;
+    height: 5px;
+}
+
+/* Mouse-over effects */
+.slider:hover {
+    opacity: 1; /* Fully shown on mouse-over */
+}
+
+/* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */ 
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none; /* Override default look */
+    appearance: none;
+
+    width: 15px; /* Set a specific slider handle width */
+    height: 20px; /* Slider handle height */
+    background: white; /* Green background */
+    border-radius: 3px;
+    cursor: pointer; /* Cursor on hover */
+}
+
+.slider::-moz-range-thumb {
+    width: 30px; /* Set a specific slider handle width */
+    height: 20px; /* Slider handle height */
+    background: black; /* Green background */
+    border-radius: 3px;
+    cursor: pointer; /* Cursor on hover */
+}
+
+/*# sourceMappingURL=index.css.map*/
+
+.slider-answer{
+    opacity: 1;   
+}
+
+.slider-answer-correct::-webkit-slider-thumb {
+    background: green;
+    width: 10px;
+}
+.slider-answer-correct::-moz-range-thumb {
+    background: green;
+    width: 10px;
+}
+
+.slider-answer-wrong::-webkit-slider-thumb {    
+    background: red;
+    width: 10px;
+}
+.slider-answer-wrong::-moz-range-thumb {    
+    background: red;
+    width: 10px;
+}
