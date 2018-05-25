@@ -16,6 +16,16 @@ const lvlInfoData: {
     {
         bandsTotal: 4,
         bandsAltered: 2,
+        dbStep: 12
+    },
+    {
+        bandsTotal: 8,
+        bandsAltered: 2,
+        dbStep: 6
+    },    
+    {
+        bandsTotal: 16,
+        bandsAltered: 4,
         dbStep: 6
     },
     {
@@ -44,7 +54,7 @@ class GraphicEqGame extends React.Component<GameStageProps, GraphicEqGameState> 
     minFreq = this.freqFullRange ? 150 : 200;
     maxFreq = this.freqFullRange ? 12800 : 5000;
     lvlInfo = lvlInfoData[this.props.level - 1];
-    correctThreshold = this.lvlInfo.dbStep;
+    correctDbThreshold = this.lvlInfo.dbStep - 1;    
     frequencyMultiplyStep = this.lvlInfo.bandsTotal !== 1
         ? 2 **
           (Math.log2(this.maxFreq / this.minFreq) /
@@ -106,7 +116,7 @@ class GraphicEqGame extends React.Component<GameStageProps, GraphicEqGameState> 
         const eqGains = this.props.fxOn
             ? this.state.userDbs
             : this.state.correctDbs;
-        console.info(eqGains);
+        // console.info(eqGains);
         this.fxes.map((fx, id) => fx.gain.setValueAtTime(eqGains[id], 0));        
     }
 
@@ -120,10 +130,11 @@ class GraphicEqGame extends React.Component<GameStageProps, GraphicEqGameState> 
         const correntFreqsAmount = this.state.userDbs.filter(
             (userFreq, id) =>
                 Math.abs(this.state.correctDbs[id] - userFreq) <=
-                this.correctThreshold
+                this.correctDbThreshold
         ).length;
+        const totalFreqsAmount = this.state.correctDbs.length;
         this.props.onAnswer(
-            correntFreqsAmount === this.state.correctDbs.length
+            correntFreqsAmount === totalFreqsAmount
                 ? "right"
                 : "wrong"
         );
@@ -199,7 +210,7 @@ class GraphicEqGame extends React.Component<GameStageProps, GraphicEqGameState> 
                                           Math.abs(
                                               this.state.correctDbs[id] -
                                                   this.state.userDbs[id]
-                                          ) <= this.correctThreshold
+                                          ) <= this.correctDbThreshold
                                               ? "slider-answer-correct"
                                               : "slider-answer-wrong"
                                       )}
