@@ -16,7 +16,7 @@ const lvlInfoData: {
     {
         bandsTotal: 4,
         bandsAltered: 2,
-        dbStep: 12
+        dbStep: 6
     },
     {
         bandsTotal: 8,
@@ -54,7 +54,7 @@ class GraphicEqGame extends React.Component<GameStageProps, GraphicEqGameState> 
     minFreq = this.freqFullRange ? 150 : 200;
     maxFreq = this.freqFullRange ? 12800 : 5000;
     lvlInfo = lvlInfoData[this.props.level - 1];
-    correctDbThreshold = this.lvlInfo.dbStep - 1;    
+    correctDbThreshold = this.lvlInfo.dbStep;
     frequencyMultiplyStep = this.lvlInfo.bandsTotal !== 1
         ? 2 **
           (Math.log2(this.maxFreq / this.minFreq) /
