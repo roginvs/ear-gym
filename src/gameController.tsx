@@ -14,10 +14,11 @@ interface GameControllerState {
     level: number;
     stage: number;
     lives: number;
-    musicSrc?: AudioNode;
+    musicSrc?: GainNode;
     err?: Error;
     answered?: boolean;
     fxOn: boolean;
+    paused: boolean;
 }
 export class GameController extends React.Component<
     {
@@ -39,17 +40,23 @@ export class GameController extends React.Component<
         stage: 1,
         lives: LIVES_MAX,
         musicSrc: undefined,
-        fxOn: false
+        fxOn: false,
+        paused: false
     };
 
     selectMusic = () => {
         const setMusicSrcFromAudioBuffer = (music: AudioBuffer) => {
-            const musicSrc = this.props.audioCtx.createBufferSource();
-            musicSrc.buffer = music;
-            musicSrc.loop = true;
-            musicSrc.start(0, 0);
+            const bufferSource = this.props.audioCtx.createBufferSource();
+            bufferSource.buffer = music;
+            bufferSource.loop = true;
+            bufferSource.start(0, 0);
+            const volumeSrc = this.props.audioCtx.createGain();
+            bufferSource.connect(volumeSrc);
+            if (this.state.paused) {
+                volumeSrc.gain.setValueAtTime(0, 0);
+            }
             this.setState({
-                musicSrc
+                musicSrc: volumeSrc
             });
         };
         const musicUrlList = musicList(this.props.musicType).map(
@@ -170,31 +177,63 @@ export class GameController extends React.Component<
                     <DivFadeinCss
                         key={this.state.level + "-" + this.state.stage}
                     >
-                        {this.props.game.stage({
-                            srcAudio: musicSrc,
-                            audioCtx: this.props.audioCtx,
-                            fxOn: this.state.fxOn,
-                            level: this.state.level,
-                            musicType: this.props.musicType,
-                            onAnswer: correctness => {
-                                if (correctness === "right") {
-                                    this.props.playSound("correct");
-                                } else {
-                                    const lives = this.state.lives - 1;
-                                    if (lives > 0) {
-                                        this.props.playSound("wrong");
+                        <div
+                            style={{
+                                position: "relative"
+                            }}
+                        >
+                            {this.props.game.stage({
+                                srcAudio: musicSrc,
+                                audioCtx: this.props.audioCtx,
+                                fxOn: this.state.fxOn,
+                                level: this.state.level,
+                                musicType: this.props.musicType,
+                                onAnswer: correctness => {
+                                    if (correctness === "right") {
+                                        this.props.playSound("correct");
                                     } else {
-                                        this.props.playSound("gameover");
+                                        const lives = this.state.lives - 1;
+                                        if (lives > 0) {
+                                            this.props.playSound("wrong");
+                                        } else {
+                                            this.props.playSound("gameover");
+                                        }
+                                        this.setState({
+                                            lives
+                                        });
                                     }
                                     this.setState({
-                                        lives
+                                        answered: true
                                     });
                                 }
-                                this.setState({
-                                    answered: true
-                                });
-                            }
-                        })}{" "}
+                            })}
+                            {this.state.paused ? (
+                                <div
+                                    className="bg-dark"
+                                    style={{
+                                        position: "absolute",
+                                        left: 0,
+                                        right: 0,
+                                        top: 0,
+                                        bottom: 0,
+                                        opacity: 0.5
+                                    }}
+                                    onClick={this.togglePause}
+                                >
+                                    <span
+                                        style={{
+                                            position: "absolute",
+                                            left: "50%",
+                                            top: "50%",
+                                            transform: "translate(-50%, -50%)",
+                                            color: "white"
+                                        }}
+                                    >
+                                        {l.paused}
+                                    </span>
+                                </div>
+                            ) : null}
+                        </div>
                     </DivFadeinCss>
                 ) : (
                     <DivFadeinCss key="loader" className="text-center py-2">
@@ -269,7 +308,17 @@ export class GameController extends React.Component<
                         </div>
                     </div>
 
-                    <div className="col-8 offset-2 text-center">
+                    <div className="col-2 text-left">
+                        <button
+                            onClick={this.togglePause}
+                            className={classnames(
+                                "btn btn-secondary m-1 text-dark"
+                            )}
+                        >
+                            <i className={classnames("fa fa-fw fa-pause")} />
+                        </button>
+                    </div>
+                    <div className="col-8 text-center">
                         {this.state.answered ? (
                             <DivFadeinCss>
                                 <button
@@ -318,4 +367,18 @@ export class GameController extends React.Component<
             </DivFadeinCss>
         );
     }
+
+    togglePause = () => {
+        this.setState(
+            {
+                paused: !this.state.paused
+            },
+            () => {
+                if (this.state.musicSrc) {
+                    this.state.musicSrc.gain.setValueAtTime(this.state.paused ? 0 : 1, 0);
+                    
+                }
+            }
+        );
+    };
 }

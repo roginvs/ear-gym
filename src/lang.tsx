@@ -26,6 +26,7 @@ const ru = {
     //gameOver: "Игра окончена",
     startNextStage: "Далее",
     exit: "Выход",
+    paused: "Пауза",
     startAgain: "Начать уровень снова",
     error: "Ошибка",
     gain: "Громкость",
@@ -76,6 +77,7 @@ const en: typeof ru = {
     //gameOver: "Game over",
     startNextStage: "Next",
     exit: "Exit",
+    paused: "Paused",
     startAgain: "Start level again",
     error: "Error",
     gain: "Volume",
@@ -101,7 +103,7 @@ const en: typeof ru = {
     fxSoundOriginal: "Original",
     fxSoundModified: "Modified",
 
-    soundTheSame: "That sounds the same",
+    soundTheSame: "That sounds the same",    
 };
 
 function browserLocale() {
