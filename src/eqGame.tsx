@@ -50,7 +50,14 @@ class EqSelector extends React.Component<EqSelectorProps, EqSelectorState> {
                         if (this.props.correctFreq) {
                             return;
                         }
-                        const xPos = e.pageX - e.currentTarget.offsetLeft;
+                        /*
+                        console.info(e.pageX,                            
+                            e.currentTarget.offsetLeft,
+                            e.currentTarget.scrollLeft,
+                            e.currentTarget.clientLeft,                            
+                        );
+                        */
+                        const xPos = e.pageX - e.currentTarget.getBoundingClientRect().left; // e.currentTarget.offsetLeft;
                         const xTotal = e.currentTarget.clientWidth;
                         this.setState({
                             x: xPos / xTotal
