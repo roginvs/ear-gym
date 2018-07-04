@@ -7,9 +7,8 @@ for (const name of ["log", "info", "warn", "error"]) {
         mainArguments.unshift(name);
         mainArguments.unshift(now.toISOString());
         const str =
-            new Date() +
-            " " +
-            mainArguments.map((x: any) => {
+            `${new Date()} ` +             
+            `${mainArguments.map((x: any) => {
                 try {
                     if (x instanceof Error) {
                         return `${x.name} ${x.message} ${x.stack}`;
@@ -30,7 +29,7 @@ for (const name of ["log", "info", "warn", "error"]) {
                 } catch (e) {
                     return x;
                 }
-            });
+            }).join(' ')}`;
         originalFunctions[name].apply(console, mainArguments);
 
         const div = document.createElement("div");
@@ -44,17 +43,11 @@ for (const name of ["log", "info", "warn", "error"]) {
 
 window.onerror = function(msg, url, linenumber, linepos, error) {
     console.error(
-        'JSERROR "' +
-            msg +
-            '" in ' +
-            url +
-            " on line: " +
-            linenumber +
-            ":" +
-            linepos +
-            (error
-                ? " " + error.message + " " + error.name + " " + error.stack
-                : "")
+        `JSERROR "${msg}" in ${url} on line ${linenumber}:${linepos}${
+            error
+            ? ` ${error.message} ${error.name} ${error.stack}`
+            : ""
+        }`
     );
     return true;
 };

@@ -159,7 +159,7 @@ class EqSelector extends React.Component<EqSelectorProps, EqSelectorState> {
                     />
                     {[1, 2, 3, 4, 5, 6, 7, 8].map(i => (
                         <span
-                            key={"line" + i}
+                            key={`line${i}`}
                             style={{
                                 left: `${i * 100 / 9}%`,
                                 width: 1,
@@ -175,7 +175,7 @@ class EqSelector extends React.Component<EqSelectorProps, EqSelectorState> {
 
                     {[1, 2, 3, 4, 5, 6, 7, 8, 9].map(i => (
                         <span
-                            key={"fr1-" + i}
+                            key={`fr1-${i}`}
                             style={{
                                 textAlign: "center",
                                 position: "absolute",
@@ -199,7 +199,7 @@ class EqSelector extends React.Component<EqSelectorProps, EqSelectorState> {
 
                     {[1, 2, 3, 4, 5, 6, 7, 8].map(i => (
                         <span
-                            key={"fr1-" + i}
+                            key={`fr1-${i}`}
                             style={{
                                 textAlign: "center",
                                 position: "absolute",
@@ -289,7 +289,7 @@ class EqStage extends React.Component<GameStageProps & {
     }
 
     render() {
-        const [q, gain] = LEVELS_Q_GAIN[this.props.level - 1];
+        const [q] = LEVELS_Q_GAIN[this.props.level - 1];
         return (
             <div>
                 <EqSelector
@@ -306,7 +306,7 @@ class EqStage extends React.Component<GameStageProps & {
                             answeredFreq: freq
                         });
 
-                        const [q, gain] = LEVELS_Q_GAIN[
+                        const [q] = LEVELS_Q_GAIN[
                             this.props.level - 1
                         ];
                         const freqMax = correctFreq * 2 ** (q / 2);

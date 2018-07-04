@@ -129,7 +129,7 @@ export class GameRoot extends React.Component<
                                                                             lvl
                                                                         }
                                                                         onClick={() => {
-                                                                            this.props.audioCtx.resume();
+                                                                            this.props.audioCtx.resume().catch(e => console.warn(e));
                                                                             this.props.playSound(
                                                                                 "silenceIosWorkaround"
                                                                             );
@@ -199,7 +199,7 @@ export class GameRoot extends React.Component<
                                                                             }
                                                                         );
                                                                     } else {
-                                                                        this.props.audioCtx.resume();
+                                                                        this.props.audioCtx.resume().catch(e => console.warn(e));
                                                                         this.props.playSound(
                                                                             "silenceIosWorkaround"
                                                                         );
@@ -229,9 +229,7 @@ export class GameRoot extends React.Component<
                                                                         lvl => (
                                                                             <span
                                                                                 key={
-                                                                                    lvl +
-                                                                                    "-" +
-                                                                                    maxLevel
+                                                                                    `${lvl}-${maxLevel}`                                                                                
                                                                                 }
                                                                             >
                                                                                 <i

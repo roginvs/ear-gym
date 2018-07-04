@@ -65,7 +65,7 @@ class GraphicEqGame extends React.Component<GameStageProps, GraphicEqGameState> 
     );
 
     state = (() => {
-        const correctDbs = this.bandsFreqs.map((x, id) => 0);
+        const correctDbs = this.bandsFreqs.map(x => 0);
         // Not a disaster if band is modified several times
         for (const i of range(0, this.lvlInfo.bandsAltered)) {
             const rndIdx = Math.floor(Math.random() * this.bandsFreqs.length);
@@ -96,7 +96,7 @@ class GraphicEqGame extends React.Component<GameStageProps, GraphicEqGameState> 
         gainNode.gain.setValueAtTime(0.8, 0);
         this.props.srcAudio.connect(gainNode);
         gainNode.connect(this.fxes[0]);
-        this.fxes.map(
+        this.fxes.forEach(
             (fx, id) =>
                 id !== this.fxes.length - 1
                     ? this.fxes[id].connect(this.fxes[id + 1])
@@ -104,7 +104,7 @@ class GraphicEqGame extends React.Component<GameStageProps, GraphicEqGameState> 
         );
 
         // console.info(`qtep=${this.qStep}`, this.bandsFreqs);
-        this.fxes.map((fx, id) => {
+        this.fxes.forEach((fx, id) => {
             fx.type = "peaking";
             fx.frequency.setValueAtTime(this.bandsFreqs[id], 0);
             fx.Q.setValueAtTime(2 * Math.log2(this.frequencyMultiplyStep), 0);
@@ -117,11 +117,11 @@ class GraphicEqGame extends React.Component<GameStageProps, GraphicEqGameState> 
             ? this.state.userDbs
             : this.state.correctDbs;
         // console.info(eqGains);
-        this.fxes.map((fx, id) => fx.gain.setValueAtTime(eqGains[id], 0));        
+        this.fxes.forEach((fx, id) => fx.gain.setValueAtTime(eqGains[id], 0));        
     }
 
     componentWillUnmount() {
-        this.fxes.map(fx => fx.disconnect());
+        this.fxes.forEach(fx => fx.disconnect());
     }
     answered() {
         this.setState({
@@ -160,7 +160,7 @@ class GraphicEqGame extends React.Component<GameStageProps, GraphicEqGameState> 
                     >
                         {this.bandsFreqs.map((band, id) => (
                             <input
-                                key={"user-" + id}
+                                key={`user-${id}`}
                                 className="slider"
                                 value={this.state.userDbs[id]}
                                 type="range"
@@ -202,7 +202,7 @@ class GraphicEqGame extends React.Component<GameStageProps, GraphicEqGameState> 
                         {this.state.userAnswered
                             ? this.bandsFreqs.map((band, id) => (
                                   <input
-                                      key={"correct-" + id}
+                                      key={`correct-${id}`}
                                       value={this.state.correctDbs[id]}
                                       className={classnames(
                                           "slider",
@@ -236,7 +236,7 @@ class GraphicEqGame extends React.Component<GameStageProps, GraphicEqGameState> 
 
                         {this.bandsFreqs.map((band, id) => (
                             <span
-                                key={"bandinfo-" + id}
+                                key={`bandinfo-${id}`}
                                 style={{
                                     position: "absolute",
                                     left: `${100 *

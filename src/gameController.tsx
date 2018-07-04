@@ -79,7 +79,7 @@ export class GameController extends React.Component<
                     ] = downloadedAudioBuffer;
                     setMusicSrcFromAudioBuffer(downloadedAudioBuffer);
                 }
-            );
+            ).catch(e => console.warn(e));
         }
     };
     startNexStage = () => {
@@ -175,7 +175,7 @@ export class GameController extends React.Component<
 
                 {musicSrc ? (
                     <DivFadeinCss
-                        key={this.state.level + "-" + this.state.stage}
+                        key={`${this.state.level}-${this.state.stage}`}
                     >
                         <div
                             style={{

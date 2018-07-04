@@ -41,7 +41,7 @@ class GainStage extends React.Component<GameStageProps, GameState> {
     }
 
     state: GameState = (() => {
-        const musicType = this.props.musicType;
+        // const musicType = this.props.musicType;
         const [gainStep, gainNumbers] = LEVELS_DISTANCE_CHOICES[this.props.level-1];
         const startMin = -GAIN_RANGE;
         const startMax = GAIN_RANGE - gainNumbers * gainStep;
@@ -58,7 +58,7 @@ class GainStage extends React.Component<GameStageProps, GameState> {
 
     
     updateFx() {
-        const [gainStep, gainNumbers] = LEVELS_DISTANCE_CHOICES[this.props.level-1];
+        const [gainStep] = LEVELS_DISTANCE_CHOICES[this.props.level-1];
             const gainDb =
                 this.state.firstGain + this.state.correctId * gainStep;                
             // "gainDb / 20" instead of "/10" because decibells is power measure 

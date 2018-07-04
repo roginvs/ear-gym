@@ -30,5 +30,5 @@ export function range(start: number, stop: number) {
 }
 
 export function assertNever(x: never): never {
-    throw new Error("Unexpected: " + x);
+    throw new Error(`Unexpected: ${x}`);
 }

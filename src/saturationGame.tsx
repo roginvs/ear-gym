@@ -2,8 +2,7 @@ import * as React from "react";
 import l from "./lang";
 
 import { GameStageProps, Game } from "./game";
-import { assertNever, range } from "./utils";
-import classnames from "classnames";
+import { range } from "./utils";
 import { GameSelectorChoice } from "./gameSelectorChoice";
 
 const NO_SATURATION = {

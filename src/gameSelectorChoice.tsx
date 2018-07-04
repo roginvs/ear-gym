@@ -17,8 +17,7 @@ export class GameSelectorChoice extends React.Component<
 > {
     state: GameSelectorChoiceState = {};
 
-    render() {
-        const col = Math.floor(12 / this.props.names.length);
+    render() {        
         return (
             <div className="py-2">
                 <div
