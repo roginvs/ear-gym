@@ -20,6 +20,13 @@ declare global {
      }
 }
 (async () => {
+    if (document.location.hostname !== "localhost" && 
+        document.location.origin.slice(0, 7) === 'http://') { 
+        console.info('Redirecting to https');
+        document.location.href = document.location.href.replace('http://', 'https://'); 
+        return
+    }
+    
     console.info(`Creating context`);    
     const AudioCtx = window.AudioContext || window.webkitAudioContext;
     if (!AudioCtx) {
