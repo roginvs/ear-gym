@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "tslint -c ./tslint.json --project ./tsconfig.json --format stylish",
     "build": "npm run lint && webpack --mode production --devtool nosources-source-map --progress",
-    "start": "webpack-dev-server --mode development --open --devtool #cheap-module-source-map"
+    "start": "webpack-dev-server --mode development --open --devtool cheap-module-source-map"
   },
   "author": "",
   "license": "ISC",
