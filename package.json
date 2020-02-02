@@ -27,7 +27,7 @@
     "typestrict": "0.0.9",
     "webpack": "^4.9.1",
     "webpack-cli": "^2.1.4",
-    "webpack-dev-server": "^3.1.4",
+    "webpack-dev-server": "^3.1.11",
     "webpack-version-hash-plugin": "0.0.2"
   },
   "dependencies": {
