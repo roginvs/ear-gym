@@ -72,14 +72,14 @@ export class GameController extends React.Component<
             this.setState({
                 musicSrc: undefined
             });
-            urlToAudioBuffer(this.props.audioCtx, musicUrl).then(
-                downloadedAudioBuffer => {
+            urlToAudioBuffer(this.props.audioCtx, musicUrl)
+                .then(downloadedAudioBuffer => {
                     this.urlToaudioBufferCache[
                         musicUrl
                     ] = downloadedAudioBuffer;
                     setMusicSrcFromAudioBuffer(downloadedAudioBuffer);
-                }
-            ).catch(e => console.warn(e));
+                })
+                .catch(e => console.warn(e));
         }
     };
     startNexStage = () => {
@@ -142,7 +142,8 @@ export class GameController extends React.Component<
                                     (
                                     {this.props.game.levelInfo(
                                         this.state.level
-                                    )})
+                                    )}
+                                    )
                                 </span>
                             ) : null}
                         </div>
@@ -252,59 +253,95 @@ export class GameController extends React.Component<
                 <div className="row no-gutters mx-2">
                     <div className="col-12">
                         <div className="text-center">
-                            <button
-                                onClick={() => this.setState({ fxOn: false })}
-                                className={classnames("btn btn-secondary m-1", {
-                                    "text-dark": this.state.fxOn
-                                })}
-                            >
-                                {this.props.game.fxonofftype === "onoff" ? (
+                            {this.props.game.fxonofftype === "onoff" ? (
+                                <button
+                                    onClick={() =>
+                                        this.setState({
+                                            fxOn: !this.state.fxOn
+                                        })
+                                    }
+                                    className={classnames(
+                                        "btn btn-secondary px-5 m-1",
+                                        {
+                                            "text-dark": !this.state.fxOn
+                                        }
+                                    )}
+                                >
                                     <>
-                                        <i className="fa fa-fw fa-square-o" />{" "}
-                                        {l.fxoff}
+                                        <i
+                                            className={classnames(
+                                                `fa fa-fw`,
+                                                this.state.fxOn
+                                                    ? "fa-check-square-o"
+                                                    : "fa-square-o"
+                                            )}
+                                        />
+                                        {this.state.fxOn ? l.fxon : l.fxoff}
                                     </>
-                                ) : this.props.game.fxonofftype === "ab" ? (
-                                    <>
-                                        <i className="fa fa-fw fa-volume-up" />{" "}
-                                        {l.fxSoundA}
-                                    </>
-                                ) : this.props.game.fxonofftype ===
-                                "originalmodified" ? (
-                                    <>
-                                        <i className="fa fa-fw fa-square-o" />{" "}
-                                        {l.fxSoundOriginal}
-                                    </>
-                                ) : (
-                                    assertNever(this.props.game.fxonofftype)
-                                )}
-                            </button>
+                                </button>
+                            ) : (
+                                <>
+                                    <button
+                                        onClick={() =>
+                                            this.setState({ fxOn: false })
+                                        }
+                                        className={classnames(
+                                            "btn btn-secondary m-1",
+                                            {
+                                                "text-dark": this.state.fxOn
+                                            }
+                                        )}
+                                    >
+                                        {this.props.game.fxonofftype ===
+                                        "ab" ? (
+                                            <>
+                                                <i className="fa fa-fw fa-volume-up" />{" "}
+                                                {l.fxSoundA}
+                                            </>
+                                        ) : this.props.game.fxonofftype ===
+                                          "originalmodified" ? (
+                                            <>
+                                                <i className="fa fa-fw fa-square-o" />{" "}
+                                                {l.fxSoundOriginal}
+                                            </>
+                                        ) : (
+                                            assertNever(
+                                                this.props.game.fxonofftype
+                                            )
+                                        )}
+                                    </button>
 
-                            <button
-                                onClick={() => this.setState({ fxOn: true })}
-                                className={classnames("btn btn-secondary m-1", {
-                                    "text-dark": !this.state.fxOn
-                                })}
-                            >
-                                {this.props.game.fxonofftype === "onoff" ? (
-                                    <>
-                                        <i className="fa fa-fw fa-check-square-o" />
-                                        {l.fxon}
-                                    </>
-                                ) : this.props.game.fxonofftype === "ab" ? (
-                                    <>
-                                        <i className="fa fa-fw fa-volume-up" />{" "}
-                                        {l.fxSoundB}
-                                    </>
-                                ) : this.props.game.fxonofftype ===
-                                "originalmodified" ? (
-                                    <>
-                                        <i className="fa fa-fw fa-check-square-o" />
-                                        {l.fxSoundModified}
-                                    </>
-                                ) : (
-                                    assertNever(this.props.game.fxonofftype)
-                                )}
-                            </button>
+                                    <button
+                                        onClick={() =>
+                                            this.setState({ fxOn: true })
+                                        }
+                                        className={classnames(
+                                            "btn btn-secondary m-1",
+                                            {
+                                                "text-dark": !this.state.fxOn
+                                            }
+                                        )}
+                                    >
+                                        {this.props.game.fxonofftype ===
+                                        "ab" ? (
+                                            <>
+                                                <i className="fa fa-fw fa-volume-up" />{" "}
+                                                {l.fxSoundB}
+                                            </>
+                                        ) : this.props.game.fxonofftype ===
+                                          "originalmodified" ? (
+                                            <>
+                                                <i className="fa fa-fw fa-check-square-o" />
+                                                {l.fxSoundModified}
+                                            </>
+                                        ) : (
+                                            assertNever(
+                                                this.props.game.fxonofftype
+                                            )
+                                        )}
+                                    </button>
+                                </>
+                            )}
                         </div>
                     </div>
 
@@ -375,8 +412,10 @@ export class GameController extends React.Component<
             },
             () => {
                 if (this.state.musicSrc) {
-                    this.state.musicSrc.gain.setValueAtTime(this.state.paused ? 0 : 1, 0);
-                    
+                    this.state.musicSrc.gain.setValueAtTime(
+                        this.state.paused ? 0 : 1,
+                        0
+                    );
                 }
             }
         );
