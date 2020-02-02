@@ -4,16 +4,10 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title><%= htmlWebpackPlugin.options.title %></title>
-
-    <%- include /src/ejs/analytics %>
   </head>
   <body>
     <div id="monkeyLogs"></div>
     <div id="root"></div>
-
-    <div class="text-center">
-      <%# - include /src/ejs/facebook %>
-    </div>
 
     <!-- giosg tag -->
     <script>
@@ -38,5 +32,21 @@
       })(window, document, 4968);
     </script>
     <!-- giosg tag -->
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=UA-116353545-2"
+    ></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+
+      gtag("config", "UA-116353545-2");
+    </script>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
   </body>
 </html>
