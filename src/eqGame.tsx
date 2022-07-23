@@ -249,7 +249,7 @@ class EqStage extends React.Component<GameStageProps & {
 
     state: GameState = {
         correctFreq:
-            this.props.musicType === "music" || this.props.musicType === "drums"
+            this.props.musicType === "music" || this.props.musicType === "drums" || this.props.musicType === "whitenoise"
                 ? Math.round(100 * 2 ** (Math.random() * 7))
                 : this.props.musicType === "piano" ||
                   this.props.musicType === "electricguitar"

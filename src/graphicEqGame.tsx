@@ -45,7 +45,7 @@ const MAX_DB = 16;
 
 class GraphicEqGame extends React.Component<GameStageProps, GraphicEqGameState> {
     freqFullRange = this.props.musicType === "music" ||
-    this.props.musicType === "drums"
+    this.props.musicType === "drums" || this.props.musicType === "whitenoise"
         ? true
         : this.props.musicType === "piano" ||
           this.props.musicType === "electricguitar"
