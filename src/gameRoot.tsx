@@ -15,7 +15,7 @@ const LS_HIGH_SCORES_PREFIX = "highscores";
 
 /**
  * Return array of passed levels where index is level number
- * Zero index is always true
+ * Zero index is not used
  */
 function loadHighScores(game: Game, musicType: MusicType) {
   //if (location.hostname === 'localhost') {
