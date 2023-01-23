@@ -26,6 +26,10 @@ export function musicList(type: MusicType) {
         "epidemia-003.mp3",
         "epidemia-004.mp3",
         "epidemia-005.mp3",
+        "complexnumbers-001.mp3",
+        "complexnumbers-002.mp3",
+        "complexnumbers-003.mp3",
+        "complexnumbers-004.mp3",
       ]
     : type === "piano"
     ? ["piano-001.mp3", "piano-002.mp3", "piano-003.mp3"]
